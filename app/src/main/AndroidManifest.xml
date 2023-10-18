@@ -13,6 +13,11 @@
         android:theme="@style/Theme.CryptoTracker"
         tools:targetApi="31">
         <activity
+            android:name=".WalletSettings"
+            android:exported="false"
+            android:label="@string/title_activity_wallet_settings"
+            android:theme="@style/Theme.CryptoTracker.NoActionBar" />
+        <activity
             android:name=".Register"
             android:exported="false" />
         <activity

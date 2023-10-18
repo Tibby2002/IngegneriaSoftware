@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,6 +24,17 @@ import java.util.Collection;
 
 public class Register extends AppCompatActivity {
     private String tempPhoto = "Default-photo";
+    ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                // Callback is invoked after the user selects a media item or closes the
+                // photo picker.
+                if (uri != null) {
+                    Log.d("PhotoPicker", "Selected URI: " + uri);
+                } else {
+                    Log.d("PhotoPicker", "No media selected");
+                }
+            });
+
     private void SaveOnFile(String... s) throws IOException {
         File path = this.getFilesDir();
         File file = new File(path, "settings.txt");
@@ -35,24 +47,6 @@ public class Register extends AppCompatActivity {
             } finally {
                 stream.close();
             }
-    }
-    public void pickPhoto(View view){
-        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
-                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                    // Callback is invoked after the user selects a media item or closes the
-                    // photo picker.
-                    if (uri != null) {
-                        Log.d("PhotoPicker", "Selezionato URI: " + uri);
-                        tempPhoto = uri.toString();
-                    } else {
-                        Log.d("PhotoPicker", "Nessuna foto selezionata");
-
-                    }
-                });
-
-        pickMedia.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build());
     }
 
     public void SaveRegisterInformation(View view){
@@ -74,5 +68,10 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        Button btn = findViewById(R.id.button);
+        btn.setOnClickListener(view -> pickMedia.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build()));
+
     }
 }
