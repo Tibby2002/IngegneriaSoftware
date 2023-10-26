@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="possible_wallets">
+        <item>Bitcoin</item>
+        <item>Ethereum</item>
+        <item>Solana</item>
+        <item>Tether</item>
+        <item>USDC</item>
+        <item>Polygon</item>
+        <item>Tron</item>
+        <item>XRP</item>
+    </string-array>
+</resources>
