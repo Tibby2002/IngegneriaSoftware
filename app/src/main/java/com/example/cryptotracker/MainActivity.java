@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.this.startActivity(new Intent(MainActivity.this, WalletSettings.class));
+                MainActivity.this.startActivity(new Intent(MainActivity.this, WalletOverview.class));
             }
         });
 

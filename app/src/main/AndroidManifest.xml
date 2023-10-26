@@ -13,6 +13,12 @@
         android:theme="@style/Theme.CryptoTracker"
         tools:targetApi="31">
         <activity
+            android:name=".AddAssets"
+            android:exported="false" />
+        <activity
+            android:name=".WalletOverview"
+            android:exported="false" />
+        <activity
             android:name=".WalletSettings"
             android:exported="false"
             android:label="@string/title_activity_wallet_settings"
