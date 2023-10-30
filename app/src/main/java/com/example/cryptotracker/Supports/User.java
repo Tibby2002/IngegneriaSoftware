@@ -1,7 +1,6 @@
-package com.example.cryptotracker.DataType;
+package com.example.cryptotracker.Supports;
 
 import java.util.Collection;
-import java.util.Map;
 
 public class User {
     public User(String n, String sur, String urlPhoto){
