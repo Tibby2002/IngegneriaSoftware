@@ -39,16 +39,15 @@
 
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="69dp"
-            android:layout_height="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:gravity="top|left"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            tools:ignore="RtlHardcoded"
-            />
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 

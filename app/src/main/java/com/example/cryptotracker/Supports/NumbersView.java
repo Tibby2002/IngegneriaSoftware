@@ -23,10 +23,12 @@ public class NumbersView {
     public String getNumberInDigit2() {
         return mNumberInDigit2;
     }
+    public void setmNumberInDigit2(String s){mNumberInDigit2 = s;}
 
     // getter method for returning the ID of the TextView 2
     public String getNumbersInText() {
         return mNumbersInText;
     }
+
 }
 

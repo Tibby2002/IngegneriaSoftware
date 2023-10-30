@@ -37,10 +37,46 @@ import io.reactivex.rxjava3.core.Single;
 
 public class WalletOverview extends AppCompatActivity {
     List<Pair<String, Pair<Double,Double>>> wallets = new ArrayList<>();
+    Double btcValue = 0.;
     Double totValue = 0.;
+    ArrayList<NumbersView> arrayList;
+    NumbersViewAdapter numbersArrayAdapter;
     int count = 0;
     List<String> chain = List.of("Polygon","Ethereum","Solana","Bitcoin","BNB","Avalanche");
     RxDataStore<Preferences> dataStoreRX;
+
+    private void getUSDPrice(){
+        for(NumbersView x : arrayList){
+            Double newval = Double.parseDouble(changeToValidFormat(x.getNumberInDigit2().substring(1)))*btcValue;
+            x.setmNumberInDigit2(String.format("$%,.2f",newval));
+        }
+        TextView value = findViewById(R.id.textView5);
+        value.setText(String.format("$%,.3f",totValue));
+        numbersArrayAdapter.notifyDataSetChanged();
+    }
+    private void getBTCPrice(){
+        RequestQueue volleyQueue = Volley.newRequestQueue(WalletOverview.this);
+        String url = "https://api.covalenthq.com/v1/btc-mainnet/address/bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh/balances_v2/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,response -> {
+            JSONObject obj = null;
+            try {
+                String jsonString =  response.get("data").toString();
+                obj = new JSONObject(jsonString);
+                JSONArray arr = obj.getJSONArray("items");
+                btcValue = Double.parseDouble(arr.getJSONObject(0).getString("quote_rate"));
+                TextView value = findViewById(R.id.textView5);
+                value.setText(String.format("₿%,.3f",totValue/btcValue));
+                for(NumbersView x : arrayList){
+                    Double newval = Double.parseDouble(changeToValidFormat(x.getNumberInDigit2().substring(1)))/btcValue;
+                    x.setmNumberInDigit2(String.format("₿%,.7f",newval));
+                }
+                numbersArrayAdapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        },error -> {});
+        volleyQueue.add(jsonObjectRequest);
+    }
     String getStringValue(String Key) {
         Preferences.Key<String> PREF_KEY = PreferencesKeys.stringKey(Key);
         Single<String> value = dataStoreRX.data().firstOrError().map(prefs -> prefs.get(PREF_KEY)).onErrorReturnItem("null");
@@ -133,8 +169,8 @@ public class WalletOverview extends AppCompatActivity {
         }
         dataStoreSingleton.setDataStore(dataStoreRX);
 
-        final ArrayList<NumbersView> arrayList = new ArrayList<>();
-        NumbersViewAdapter numbersArrayAdapter = new NumbersViewAdapter(this, arrayList);
+        arrayList = new ArrayList<>();
+        numbersArrayAdapter = new NumbersViewAdapter(this, arrayList);
         populateWallet(arrayList,numbersArrayAdapter);
         ListView numbersListView = findViewById(R.id.listView);
         numbersListView.setAdapter(numbersArrayAdapter);
@@ -143,13 +179,17 @@ public class WalletOverview extends AppCompatActivity {
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                if(isChecked){
+                    getBTCPrice();
+                }else{
+                    getUSDPrice();
+                }
             }
         });
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                WalletOverview.this.startActivity(new Intent(WalletOverview.this, WalletOverview.class));
+                WalletOverview.this.startActivity(new Intent(WalletOverview.this, AddAssets.class));
             }
         });
     }
