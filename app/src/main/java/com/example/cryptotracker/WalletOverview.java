@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +50,10 @@ public class WalletOverview extends AppCompatActivity {
         int dec = Integer.parseInt(decimals);
         double bal = Double.parseDouble(balance);
         return bal/Math.pow(10,dec);
+    }
+
+    private String changeToValidFormat(String s){
+        return s.replaceAll(",","");
     }
     private void populateWallet(ArrayList<NumbersView> arrayList,NumbersViewAdapter v){
 
@@ -77,7 +84,7 @@ public class WalletOverview extends AppCompatActivity {
                                     String symbol = arr.getJSONObject(i).getString("contract_ticker_symbol");
                                     Double balance = calculateBalance(decimals,arr.getJSONObject(i).getString("balance"));
                                     String temp = arr.getJSONObject(i).getString("pretty_quote");
-                                    Double value = Double.parseDouble(temp.subSequence(1,temp.length()).toString());
+                                    Double value = Double.parseDouble(changeToValidFormat(temp.subSequence(1,temp.length()).toString()));
                                     wallets.add(new Pair<>(symbol,new Pair<>(balance,value)));
                                 }
                             } catch (JSONException e) {
@@ -86,20 +93,21 @@ public class WalletOverview extends AppCompatActivity {
                             count--;
                             if(count == 0){
                                 for(Pair<String,Pair<Double,Double>> y : wallets){
-                                    arrayList.add(new NumbersView(y.second.first.toString(),y.first));
+                                    arrayList.add(new NumbersView(y.second.first.toString(),y.first,String.format("$%,.2f",y.second.second)));
                                     totValue += y.second.second;
                                 }
                                 v.notifyDataSetChanged();
                                 TextView value = findViewById(R.id.textView5);
-                                value.setText(totValue.toString());
+                                String r = String.format("$%,.2f",totValue);
+                                value.setText(r);
                             }
                         },
                         error -> {
-                            Toast.makeText(this, "Errore imprevisto, Riprovare!"+ url, Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Errore imprevisto, Riprovare!", Toast.LENGTH_LONG).show();
                             count--;
                             if(count == 0){
                                 for(Pair<String,Pair<Double,Double>> y : wallets){
-                                    arrayList.add(new NumbersView(y.second.first.toString(),y.first));
+                                    arrayList.add(new NumbersView(y.second.first.toString(),y.first,String.format("$%,.2f",y.second.second)));
                                 }
                                 v.notifyDataSetChanged();
                                 TextView value = findViewById(R.id.textView5);
@@ -131,6 +139,13 @@ public class WalletOverview extends AppCompatActivity {
         ListView numbersListView = findViewById(R.id.listView);
         numbersListView.setAdapter(numbersArrayAdapter);
 
+        Switch sw = findViewById(R.id.switch1);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

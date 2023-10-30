@@ -47,6 +47,9 @@ public class NumbersViewAdapter extends ArrayAdapter<NumbersView> {
         TextView textView2 = currentItemView.findViewById(R.id.textView3);
         textView2.setText(currentNumberPosition.getNumbersInText());
 
+        TextView textView3 = currentItemView.findViewById(R.id.textView1);
+        textView3.setText(currentNumberPosition.getNumberInDigit2());
+
         // then return the recyclable view
         return currentItemView;
     }
