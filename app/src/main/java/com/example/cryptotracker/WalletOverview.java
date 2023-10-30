@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,8 +33,8 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Single;
 
 public class WalletOverview extends AppCompatActivity {
-    //String nome del token, 1^ Double è il numero di token, il 2^ Double è il valore per ogni token. Alla fine il valore totale per quel token sarà dato dalla * fra i due Double.
     List<Pair<String, Pair<Double,Double>>> wallets = new ArrayList<>();
+    Double totValue = 0.;
     int count = 0;
     List<String> chain = List.of("Polygon","Ethereum","Solana","Bitcoin","BNB","Avalanche");
     RxDataStore<Preferences> dataStoreRX;
@@ -47,13 +48,17 @@ public class WalletOverview extends AppCompatActivity {
         double bal = Double.parseDouble(balance);
         return bal/Math.pow(10,dec);
     }
-    private void populateWallet(){
+    private void populateWallet(ArrayList<NumbersView> arrayList,NumbersViewAdapter v){
 
         RequestQueue volleyQueue = Volley.newRequestQueue(WalletOverview.this);
+        for(String x : chain){
+            if(!getStringValue(x).equals("null")){
+                count++;
+            }
+        }
         for(String x : chain) {
             String net = AddAssets.values.get(x);
             if (!getStringValue(x).equals("null")) {
-                count++;
                 String url = "https://api.covalenthq.com/v1/" + net + "/address/" + getStringValue(x) + "/balances_v2/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK";
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                         Request.Method.GET,
@@ -74,18 +79,32 @@ public class WalletOverview extends AppCompatActivity {
                                     String temp = arr.getJSONObject(i).getString("pretty_quote");
                                     Double value = Double.parseDouble(temp.subSequence(1,temp.length()).toString());
                                     wallets.add(new Pair<>(symbol,new Pair<>(balance,value)));
-                                    count--;
-                                    if(count == 0){
-                                        WalletOverview.this.startActivity(new Intent(WalletOverview.this, WalletOverview.class));
-                                    }
                                 }
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
-
+                            count--;
+                            if(count == 0){
+                                for(Pair<String,Pair<Double,Double>> y : wallets){
+                                    arrayList.add(new NumbersView(y.second.first.toString(),y.first));
+                                    totValue += y.second.second;
+                                }
+                                v.notifyDataSetChanged();
+                                TextView value = findViewById(R.id.textView5);
+                                value.setText(totValue.toString());
+                            }
                         },
                         error -> {
                             Toast.makeText(this, "Errore imprevisto, Riprovare!"+ url, Toast.LENGTH_LONG).show();
+                            count--;
+                            if(count == 0){
+                                for(Pair<String,Pair<Double,Double>> y : wallets){
+                                    arrayList.add(new NumbersView(y.second.first.toString(),y.first));
+                                }
+                                v.notifyDataSetChanged();
+                                TextView value = findViewById(R.id.textView5);
+                                value.setText(totValue.toString());
+                            }
                         }
                 );
 
@@ -105,19 +124,13 @@ public class WalletOverview extends AppCompatActivity {
             dataStoreRX = dataStoreSingleton.getDataStore();
         }
         dataStoreSingleton.setDataStore(dataStoreRX);
-        populateWallet();
 
-        final ArrayList<NumbersView> arrayList = new ArrayList<NumbersView>();
-        for(Pair<String,Pair<Double,Double>> x : wallets){
-            arrayList.add(new NumbersView(x.first,x.second.first.toString()));
-        }
+        final ArrayList<NumbersView> arrayList = new ArrayList<>();
         NumbersViewAdapter numbersArrayAdapter = new NumbersViewAdapter(this, arrayList);
-
-        // create the instance of the ListView to set the numbersViewAdapter
+        populateWallet(arrayList,numbersArrayAdapter);
         ListView numbersListView = findViewById(R.id.listView);
-
-        // set the numbersViewAdapter for ListView
         numbersListView.setAdapter(numbersArrayAdapter);
+
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
