@@ -117,10 +117,11 @@ public class WalletOverview extends AppCompatActivity {
                                 for (int i = 0; i < arr.length(); i++)
                                 {
                                     String decimals = arr.getJSONObject(i).getString("contract_decimals");
-                                    String symbol = arr.getJSONObject(i).getString("contract_ticker_symbol");
+                                    String symbol = arr.getJSONObject(i).getString("contract_ticker_symbol").equals("null") ? "UNDEFINED" : arr.getJSONObject(i).getString("contract_ticker_symbol");
                                     Double balance = calculateBalance(decimals,arr.getJSONObject(i).getString("balance"));
                                     String temp = arr.getJSONObject(i).getString("pretty_quote");
-                                    Double value = Double.parseDouble(changeToValidFormat(temp.subSequence(1,temp.length()).toString()));
+                                    String valid_string = temp.subSequence(1, temp.length()).toString();
+                                    Double value = Double.parseDouble(changeToValidFormat(valid_string).equals("ull") ? "0" : changeToValidFormat(valid_string));
                                     wallets.add(new Pair<>(symbol,new Pair<>(balance,value)));
                                 }
                             } catch (JSONException e) {
@@ -175,6 +176,7 @@ public class WalletOverview extends AppCompatActivity {
         ListView numbersListView = findViewById(R.id.listView);
         numbersListView.setAdapter(numbersArrayAdapter);
 
+        FloatingActionButton fab2 = findViewById(R.id.fabs2);
         Switch sw = findViewById(R.id.switch1);
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -192,5 +194,24 @@ public class WalletOverview extends AppCompatActivity {
                 WalletOverview.this.startActivity(new Intent(WalletOverview.this, AddAssets.class));
             }
         });
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WalletOverview.this.startActivity(new Intent(WalletOverview.this, WalletModify.class));
+            }
+        });
+    }
+
+    @Override
+    protected void onResume () {
+        super.onResume();
+        arrayList.clear();
+        wallets.clear();
+        totValue = 0.;
+        populateWallet(arrayList,numbersArrayAdapter);
+        TextView value = findViewById(R.id.textView5);
+        value.setText(totValue.toString());
+        numbersArrayAdapter.notifyDataSetChanged();
+
     }
 }

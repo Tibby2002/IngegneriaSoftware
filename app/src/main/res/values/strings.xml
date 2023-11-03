@@ -12,10 +12,16 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="name_reg">Nome:</string>
     <string name="title_activity_wallet_settings">WalletSettings</string>
-    <string name="tab_text_1">Overview</string>
-    <string name="tab_text_2">Manage</string>
+    <string name="tab_text_1">Modifica</string>
+    <string name="tab_text_2">Cancella</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bitcoin">Bitcoin</string>
+    <string name="title_activity_modify_wallet">ModifyWallet</string>
+    <string name="indirizzo">Indirizzo</string>
+    <string name="blockchain">BlockChain</string>
+    <string name="cancella_un_indirizzo">Cancella un Indirizzo</string>
+    <string name="yes">Conferma</string>
+    <string name="no">Cancella\n</string>
 
 </resources>
