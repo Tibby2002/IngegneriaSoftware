@@ -15,6 +15,9 @@
         android:theme="@style/Theme.CryptoTracker"
         tools:targetApi="31">
         <activity
+            android:name=".ModifyAddresses"
+            android:exported="false" />
+        <activity
             android:name=".WalletModify"
             android:exported="false" />
         <activity

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/modify_te"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:layout_marginTop="80dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Conferma modifica dell'indirizzo"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="100dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chain:"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="120dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Indirizzo:"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="50dp"
+        />
+    <TextView
+        android:id="@+id/text_chain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ETH"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="120dp"
+        />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/text_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="184dp"
+        android:textSize="13sp"/>
+
+    <Button
+        android:id="@+id/modify_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Conferma"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="350dp"
+        />
+
+
+</FrameLayout>

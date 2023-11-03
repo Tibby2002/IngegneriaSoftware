@@ -169,7 +169,6 @@ public class WalletOverview extends AppCompatActivity {
             dataStoreRX = dataStoreSingleton.getDataStore();
         }
         dataStoreSingleton.setDataStore(dataStoreRX);
-
         arrayList = new ArrayList<>();
         numbersArrayAdapter = new NumbersViewAdapter(this, arrayList);
         populateWallet(arrayList,numbersArrayAdapter);
@@ -205,13 +204,12 @@ public class WalletOverview extends AppCompatActivity {
     @Override
     protected void onResume () {
         super.onResume();
-        arrayList.clear();
         wallets.clear();
+        arrayList.clear();
         totValue = 0.;
+        btcValue = 0.;
+        count = 0;
         populateWallet(arrayList,numbersArrayAdapter);
-        TextView value = findViewById(R.id.textView5);
-        value.setText(totValue.toString());
         numbersArrayAdapter.notifyDataSetChanged();
-
     }
 }
