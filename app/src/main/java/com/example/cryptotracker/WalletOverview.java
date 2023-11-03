@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Single;
@@ -83,7 +84,7 @@ public class WalletOverview extends AppCompatActivity {
         return value.blockingGet();
     }
     private Double calculateBalance(String decimals, String balance){
-        int dec = Integer.parseInt(decimals);
+        int dec = Integer.parseInt(decimals.equals("null") ? "0" : decimals);
         double bal = Double.parseDouble(balance);
         return bal/Math.pow(10,dec);
     }
@@ -201,15 +202,4 @@ public class WalletOverview extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume () {
-        super.onResume();
-        wallets.clear();
-        arrayList.clear();
-        totValue = 0.;
-        btcValue = 0.;
-        count = 0;
-        populateWallet(arrayList,numbersArrayAdapter);
-        numbersArrayAdapter.notifyDataSetChanged();
-    }
 }

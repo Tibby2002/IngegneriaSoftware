@@ -2,6 +2,7 @@ package com.example.cryptotracker;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -89,6 +90,7 @@ public class CancellaAddress extends Fragment {
                         for(Pair<String, String> x : addresses)
                             arrayList.add(new AddressesDelete(x.first,x.second));
                         numbersArrayAdapter.notifyDataSetChanged();
+                        getActivity().startActivity(new Intent(getActivity(),WalletOverview.class));
                     }
                 }).setNegativeButton(R.string.no,null).setIcon(R.drawable.currency_bitcoin).show();
     }

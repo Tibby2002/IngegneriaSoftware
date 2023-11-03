@@ -49,7 +49,7 @@ public class ModifyAddresses extends AppCompatActivity {
                 response -> {
                     putStringValue(net,addr);
                     Toast.makeText(this,"Indirizzo modificato con successo",Toast.LENGTH_LONG).show();
-                    this.startActivity(new Intent(this,WalletModify.class));
+                    this.startActivity(new Intent(this,WalletOverview.class));
                 },
                 error -> {
                     Toast.makeText(this,"Indirizzo non valido, Riprovare!",Toast.LENGTH_LONG).show();
