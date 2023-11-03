@@ -134,6 +134,7 @@ public class WalletOverview extends AppCompatActivity {
                                     arrayList.add(new NumbersView(y.second.first.toString(),y.first,String.format("$%,.2f",y.second.second)));
                                     totValue += y.second.second;
                                 }
+                                arrayList.sort((o1,o2)-> Double.compare(Double.parseDouble(changeToValidFormat(o2.getNumberInDigit2()).substring(1)),Double.parseDouble(changeToValidFormat(o1.getNumberInDigit2()).substring(1))));
                                 v.notifyDataSetChanged();
                                 TextView value = findViewById(R.id.textView5);
                                 String r = String.format("$%,.2f",totValue);
@@ -147,6 +148,7 @@ public class WalletOverview extends AppCompatActivity {
                                 for(Pair<String,Pair<Double,Double>> y : wallets){
                                     arrayList.add(new NumbersView(y.second.first.toString(),y.first,String.format("$%,.2f",y.second.second)));
                                 }
+                                arrayList.sort((o1,o2)-> Double.compare(Double.parseDouble(changeToValidFormat(o1.getNumberInDigit2()).substring(1)),Double.parseDouble(changeToValidFormat(o2.getNumberInDigit2()).substring(1))));
                                 v.notifyDataSetChanged();
                                 TextView value = findViewById(R.id.textView5);
                                 value.setText(totValue.toString());
