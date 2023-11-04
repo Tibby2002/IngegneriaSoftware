@@ -19,16 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.util.Pair;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cryptotracker.Supports.AddressesDelete;
 import com.example.cryptotracker.Supports.DataStoreSingleton;
 import com.example.cryptotracker.Supports.DeleteAddressesAdapter;
-import com.example.cryptotracker.Supports.NumbersView;
-import com.example.cryptotracker.Supports.NumbersViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

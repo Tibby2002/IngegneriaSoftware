@@ -151,7 +151,8 @@ public class WalletOverview extends AppCompatActivity {
                                 arrayList.sort((o1,o2)-> Double.compare(Double.parseDouble(changeToValidFormat(o1.getNumberInDigit2()).substring(1)),Double.parseDouble(changeToValidFormat(o2.getNumberInDigit2()).substring(1))));
                                 v.notifyDataSetChanged();
                                 TextView value = findViewById(R.id.textView5);
-                                value.setText(totValue.toString());
+                                String r = String.format("$%,.2f",totValue);
+                                value.setText(r);
                             }
                         }
                 );

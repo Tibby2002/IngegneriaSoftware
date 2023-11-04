@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CryptoTracker"
         tools:targetApi="31">
+        <activity
+            android:name=".PriceMonitoring"
+            android:exported="false" />
         <activity
             android:name=".ModifyAddresses"
             android:exported="false" />
@@ -50,6 +55,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".Supports.NotificationService"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="app.tutorialspoint.com.notifyme.NotificationService" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
