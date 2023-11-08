@@ -72,7 +72,7 @@ public class ForegroundService extends Service {
                 volleyQueue.add(jsonObjectRequest);
             }
         }, 0,15, TimeUnit.MINUTES);
-        final String CHANNELID = "Foreground Service ID";
+        final String CHANNELID = "CHECK_PRICE_TARGET";
         NotificationChannel channel = new NotificationChannel(
                 CHANNELID,
                 CHANNELID,
@@ -81,9 +81,10 @@ public class ForegroundService extends Service {
 
       getSystemService(NotificationManager.class).createNotificationChannel(channel);
         Notification.Builder notificationTest = new Notification.Builder(this, CHANNELID)
-                .setContentText("Service is running")
-                .setContentTitle("Service enabled")
-                .setSmallIcon(R.drawable.ic_launcher_background);
+                .setContentText("Monitoraggio prezzi attivo e in funzione. " +
+                        "In caso di raggiungimento del prezzo di uno dei token selezionati verrai avvisato!")
+                .setContentTitle("Monitoraggio Prezzi attivo")
+                .setSmallIcon(R.drawable.currency_bitcoin);
         startForeground((int) (System.currentTimeMillis()%10000), notificationTest.build(),FOREGROUND_SERVICE_TYPE_DATA_SYNC);
         return super.onStartCommand(intent, flags, startId);
     }
@@ -107,9 +108,9 @@ public class ForegroundService extends Service {
         return order_actual == order_target && Math.abs(actual-target) <= 0.25;
     }
     private void notifyPrice(String token, String price){
-        String channelId = "PRICE_ALERT";
+        String channelId = "TARGET_PRICE_ALERT";
         NotificationCompat.Builder  builder = new NotificationCompat.Builder(getApplicationContext(),channelId);
-        builder.setSmallIcon(R.drawable.ic_home)
+        builder.setSmallIcon(R.drawable.currency_bitcoin)
                 .setContentTitle("Raggiungimento target di prezzo ("+price+") per"+token)
                 .setContentText(token+"ha raggiunto il prezzo richiest, Apri l'app per scoprire di più")
                 .setAutoCancel(true)
