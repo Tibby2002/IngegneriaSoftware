@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="token_contracts">
+        <item>ETH</item>
+        <item>USDC</item>
+        <item>USDT</item>
+        <item>BNB</item>
+        <item>stETH</item>
+        <item>TRX</item>
+        <item>LINK</item>
+        <item>MATIC</item>
+        <item>WBTC</item>
+        <item>SHIB</item>
+        <item>BUSD</item>
+        <item>AVAX</item>
+        <item>CRO</item>
+        <item>FTM</item>
+    </string-array>
+</resources>

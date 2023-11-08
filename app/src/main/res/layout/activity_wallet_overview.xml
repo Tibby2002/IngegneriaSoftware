@@ -72,7 +72,7 @@
         android:text="₿"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_marginTop="73dp"
-        android:layout_marginStart="344dp"
+        android:layout_marginStart="349dp"
         />
 
     <TextView
