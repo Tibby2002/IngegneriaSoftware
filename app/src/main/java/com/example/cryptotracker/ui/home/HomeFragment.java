@@ -36,13 +36,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class HomeFragment extends Fragment {
     PricesOverviewAdapter pricesOverviewAdapter;
     ArrayList<PricesOverview> arrayList;
-    int count = 0;
-    Map<Pair<String,String>,String> prices = new HashMap<>();
+    ScheduledExecutorService refresh;
+    RequestQueue volleyQueue;
+    Map<Pair<String,String>,String> prices = new LinkedHashMap<>();
     void populate(){
         prices.put(new Pair<>("eth-mainnet","USDT") ,"0xdAC17F958D2ee523a2206206994597C13D831ec7");
         prices.put(new Pair<>("eth-mainnet","BNB") , "0xB8c77482e45F1F44dE1745F52C74426C631bDD52");
@@ -57,7 +64,6 @@ public class HomeFragment extends Fragment {
         prices.put(new Pair<>("eth-mainnet","AVAX")  ,"0x85f138bfEE4ef8e540890CFb48F620571d67Eda3");
         prices.put(new Pair<>("eth-mainnet","FTM")  ,"0x4E15361FD6b4BB609Fa63C81A2be19d873717870");
         prices.put(new Pair<>("matic-mainnet","WBTC"),"0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6");
-        prices.put(new Pair<>("matic-mainnet","CRO"), "0xAdA58DF0F643D959C2A47c9D4d4c1a4deFe3F11CF" );
 
     }
     private Pair<Boolean,String> dailyChange(double yesterday, double today){
@@ -77,8 +83,8 @@ public class HomeFragment extends Fragment {
 
     }
     public void populatePrices(ArrayList<PricesOverview> arr){
-        RequestQueue volleyQueue = Volley.newRequestQueue(getContext());
         populate();
+        volleyQueue.cancelAll(request -> true);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime yesterday = LocalDateTime.now().plusDays(-1);
         LocalDateTime now = LocalDateTime.now();
@@ -98,7 +104,7 @@ public class HomeFragment extends Fragment {
                     String sigla = obj1.getString("contract_ticker_symbol");
                     DecimalFormat decimalFormat = new DecimalFormat("###,###.#######");
                     arr.add(new PricesOverview(symbol,name,sigla,decimalFormat.format(Double.parseDouble(curr_price)),dailyChange.second,dailyChange.first));
-                    pricesOverviewAdapter.notifyDataSetChanged();
+                        pricesOverviewAdapter.notifyDataSetChanged();
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -114,12 +120,35 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.chain_overview, container, false);
         arrayList = new ArrayList<>();
+        volleyQueue = Volley.newRequestQueue(getContext());
         pricesOverviewAdapter = new PricesOverviewAdapter(getContext(),arrayList);
         populatePrices(arrayList);
         ListView listView = view.findViewById(R.id.list_overview);
         listView.setAdapter(pricesOverviewAdapter);
         return view;
     }
+    //anche quando viene avviato viene chiamato questo, idem se ritorna dopo la pausa
+    @Override
+    public void onResume(){
+        super.onResume();
+        refresh = Executors.newSingleThreadScheduledExecutor();
+        refresh.scheduleAtFixedRate(()->{
+            arrayList.clear();
+            volleyQueue.cancelAll(request -> true);
+            populatePrices(arrayList);
+        },10,15, TimeUnit.SECONDS);
+    }
 
+    //viene chiamato quando viene messo in pausa il fragment
+    @Override
+    public void onPause(){
+        super.onPause();
+        refresh.shutdown();
+    }
 
+    @Override
+    public void onStop(){
+        super.onStop();
+        refresh.shutdown();
+    }
 }
