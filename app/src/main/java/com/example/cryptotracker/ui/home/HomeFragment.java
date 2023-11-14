@@ -6,6 +6,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.cryptotracker.Supports.NumbersView;
 import com.example.cryptotracker.Supports.NumbersViewAdapter;
 import com.example.cryptotracker.Supports.PricesOverview;
 import com.example.cryptotracker.Supports.PricesOverviewAdapter;
+import com.example.cryptotracker.TokenPriceOverview;
 import com.example.cryptotracker.WalletOverview;
 import com.example.cryptotracker.ui.gallery.PriceMonitoring;
 
@@ -125,7 +127,30 @@ public class HomeFragment extends Fragment {
         populatePrices(arrayList);
         ListView listView = view.findViewById(R.id.list_overview);
         listView.setAdapter(pricesOverviewAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent newIntent = new Intent(getContext(),TokenPriceOverview.class);
+                newIntent.putExtra("name",arrayList.get(position).getName());
+                newIntent.putExtra("sigla", arrayList.get(position).getSigla());
+                newIntent.putExtra("logo",arrayList.get(position).getSymbol());
+                newIntent.putExtra("delta",arrayList.get(position).getDeltaPrice());
+                String token_addr = "";
+                String net = "";
+                for(Map.Entry<Pair<String,String>,String> x : prices.entrySet()) {
+                    if(x.getKey().second.equals(arrayList.get(position).getSigla())){
+                        net = x.getKey().first;
+                        token_addr = x.getValue();
+                    }
+                }
+                newIntent.putExtra("price",arrayList.get(position).getPrice());
+                newIntent.putExtra("token_address",token_addr);
+                newIntent.putExtra("net",net);
+                getContext().startActivity(newIntent);
+            }
+        });
         return view;
+
     }
     //anche quando viene avviato viene chiamato questo, idem se ritorna dopo la pausa
     @Override
