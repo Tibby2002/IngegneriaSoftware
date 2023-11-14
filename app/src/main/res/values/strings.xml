@@ -23,5 +23,8 @@
     <string name="cancella_un_indirizzo">Cancella un Indirizzo</string>
     <string name="yes">Conferma</string>
     <string name="no">Cancella\n</string>
+    <string name="title_activity_full_screen_price_token">FullScreenPriceToken</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

@@ -22,4 +22,15 @@
     <style name="Theme.CryptoTracker.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.CryptoTracker.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.CryptoTracker.Fullscreen" parent="Theme.CryptoTracker">
+        <item name="android:actionBarStyle">@style/Widget.Theme.CryptoTracker.ActionBar.Fullscreen
+        </item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.CryptoTracker.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
 </resources>

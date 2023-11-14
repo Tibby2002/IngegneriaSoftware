@@ -3,11 +3,14 @@ package com.example.cryptotracker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +25,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -40,8 +45,14 @@ public class TokenPriceOverview extends AppCompatActivity {
     List<Float> values = new ArrayList<>();
     List<Entry> entryGraph = new ArrayList<>();
 
-    private void populateGraphData(){
-        LineChart mChart = findViewById(R.id.line_chart);
+
+    private void populateGraphData(boolean landscape){
+        LineChart mChart;
+        if(landscape){
+            mChart = findViewById(R.id.line_chart_landscape);
+        }else{
+            mChart = findViewById(R.id.line_chart);
+        }
         mChart.animateX(3000, Easing.EasingOption.EaseInElastic);
         mChart.setTouchEnabled(true);
         mChart.setPinchZoom(true);
@@ -82,7 +93,7 @@ public class TokenPriceOverview extends AppCompatActivity {
             mChart.setData(data);
         }
     }
-    private void populateInformation(){
+    private void populateInformation(boolean landscape){
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime year_ago = LocalDateTime.now().plusYears(-1);
@@ -98,17 +109,19 @@ public class TokenPriceOverview extends AppCompatActivity {
             for(int i = prices.length()-1; i >= 0; i--){
                 values.add(Float.parseFloat(prices.getJSONObject(i).getString("price").replaceAll(",","")));
             }
-            String curr_price = obj1.getJSONArray("prices").getJSONObject(0).getString("price");
-            String yesterday_price = obj1.getJSONArray("prices").getJSONObject(1).getString("price");
+            if(!landscape){
+                String curr_price = obj1.getJSONArray("prices").getJSONObject(0).getString("price");
+                String yesterday_price = obj1.getJSONArray("prices").getJSONObject(1).getString("price");
                 TextView varianza = findViewById(R.id.varianza);
-            if(Double.parseDouble(curr_price.replaceAll(",","")) >= Double.parseDouble(yesterday_price.replaceAll(",",""))){
-                is_upper = true;
-                varianza.setTextColor(Color.RED);
-            }else{
-                varianza.setTextColor(Color.RED);
-                is_upper = false;
+                if(Double.parseDouble(curr_price.replaceAll(",","")) >= Double.parseDouble(yesterday_price.replaceAll(",",""))){
+                    is_upper = true;
+                    varianza.setTextColor(Color.RED);
+                }else{
+                    varianza.setTextColor(Color.RED);
+                    is_upper = false;
+                }
             }
-            populateGraphData();
+            populateGraphData(landscape);
             }catch (JSONException e){e.printStackTrace();}
         },error -> {});
         volleyQueue.add(jsonObjectRequest);
@@ -117,21 +130,26 @@ public class TokenPriceOverview extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_token_price_overview);
-        populateInformation();
-        TextView name = findViewById(R.id.name);
-        TextView prezzo = findViewById(R.id.prezzo);
-        TextView varianza = findViewById(R.id.varianza);
-        ImageView logo = findViewById(R.id.logo_token);
-        String name_s = getIntent().getExtras().getString("name")+" ("+ getIntent().getExtras().getString("sigla") +")";
-        name.setText(name_s);
-        prezzo.setText(getIntent().getExtras().getString("price"));
-        varianza.setText(getIntent().getExtras().getString("delta"));
-        if(is_upper){
-            varianza.setTextColor(Color.GREEN);
-        }else{
-            varianza.setTextColor(Color.RED);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setContentView(R.layout.activity_token_price_overview_landscape);
+            populateInformation(true);
+        } else {
+            setContentView(R.layout.activity_token_price_overview);
+            populateInformation(false);
+            TextView name = findViewById(R.id.name);
+            TextView prezzo = findViewById(R.id.prezzo);
+            TextView varianza = findViewById(R.id.varianza);
+            ImageView logo = findViewById(R.id.logo_token);
+            String name_s = getIntent().getExtras().getString("name") + " (" + getIntent().getExtras().getString("sigla") + ")";
+            name.setText(name_s);
+            prezzo.setText(getIntent().getExtras().getString("price"));
+            varianza.setText(getIntent().getExtras().getString("delta"));
+            if (is_upper) {
+                varianza.setTextColor(Color.GREEN);
+            } else {
+                varianza.setTextColor(Color.RED);
+            }
+            Picasso.get().load(getIntent().getExtras().getString("logo")).placeholder(R.drawable.currency_bitcoin).into(logo);
         }
-        Picasso.get().load(getIntent().getExtras().getString("logo")).placeholder(R.drawable.currency_bitcoin).into(logo);
     }
 }
