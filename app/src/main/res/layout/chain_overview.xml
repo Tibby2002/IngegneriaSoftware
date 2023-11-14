@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Panoramica andamento prezzi"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="105dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:text="%24h:"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="323dp"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:text="Prezzo:"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="225dp"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:text="Sigla:"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="151dp"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:text="Nome:"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="65dp"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:text="Icona:"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="1dp"
+
+        />
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:layout_marginBottom="85dp"
+        android:clickable="true"
+        android:id="@+id/list_overview"
+        />
+
+
+</RelativeLayout>

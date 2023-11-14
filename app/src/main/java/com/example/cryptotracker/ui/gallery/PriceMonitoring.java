@@ -46,12 +46,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class PriceMonitoring extends Fragment {
-    Map<String,String> ethereum;
-    Map<String,String> polygon;
-    Map<String,String> solana;
-    Map<String,String> bnb;
-    Map<String,String> avalanche;
-    void populate(){
+    public static Map<String,String> ethereum;
+    public static Map<String,String> polygon;
+    public static Map<String,String> solana;
+    public static Map<String,String> bnb;
+    public static Map<String,String> avalanche;
+    public static void populate(){
         ethereum = new HashMap<>();
         polygon = new HashMap<>();
         solana = new HashMap<>();

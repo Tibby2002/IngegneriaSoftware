@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String usr = name + " " + surname;
         ImageView img = (ImageView) findViewById(R.id.imageView);
-        if (!photo.equals("Default-photo")) {
+        if (!photo.equals("Default-photo") && !photo.equals(" ")) {
             img.setImageIcon(Icon.createWithContentUri(photo));
         }
         NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
