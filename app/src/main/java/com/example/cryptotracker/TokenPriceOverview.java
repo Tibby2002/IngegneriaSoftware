@@ -19,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.cryptotracker.Supports.PricesOverview;
+import com.example.cryptotracker.ui.home.HomeFragment;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -39,11 +40,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TokenPriceOverview extends AppCompatActivity {
     boolean is_upper = false;
     List<Float> values = new ArrayList<>();
     List<Entry> entryGraph = new ArrayList<>();
+
+    ScheduledExecutorService refresh;
+    RequestQueue volleyQueue;
 
 
     private void populateGraphData(boolean landscape){
@@ -94,7 +101,6 @@ public class TokenPriceOverview extends AppCompatActivity {
         }
     }
     private void populateInformation(boolean landscape){
-        RequestQueue volleyQueue = Volley.newRequestQueue(this);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime year_ago = LocalDateTime.now().plusYears(-1);
         LocalDateTime now = LocalDateTime.now();
@@ -130,6 +136,9 @@ public class TokenPriceOverview extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        volleyQueue = Volley.newRequestQueue(this);
+        volleyQueue.cancelAll(request -> true);
+        refresh = Executors.newSingleThreadScheduledExecutor();
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setContentView(R.layout.activity_token_price_overview_landscape);
             populateInformation(true);
@@ -151,5 +160,57 @@ public class TokenPriceOverview extends AppCompatActivity {
             }
             Picasso.get().load(getIntent().getExtras().getString("logo")).placeholder(R.drawable.currency_bitcoin).into(logo);
         }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        refresh.shutdown();
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        refresh.shutdown();
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        refresh.scheduleAtFixedRate(()->{
+            volleyQueue.cancelAll(request -> true);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            String url = "https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/"+getIntent().getExtras().getString("net")+"/USD/"+getIntent().getExtras().getString("token_address")+"/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK"+
+                    "&from="+dtf.format(now.plusDays(-1))+"&to="+dtf.format(now);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null, response -> {
+                try{
+                    String jsonString =  response.get("data").toString();
+                    JSONArray obj = new JSONArray(jsonString);
+                    JSONObject obj1 = obj.getJSONObject(0);
+                    String curr_price = obj1.getJSONArray("prices").getJSONObject(0).getString("price");
+                    String yesterday_price = obj1.getJSONArray("prices").getJSONObject(1).getString("price");
+                    Pair<Boolean,String> res = HomeFragment.dailyChange(Double.parseDouble(yesterday_price.replaceAll(",","")),Double.parseDouble(curr_price.replaceAll(",","")));
+                    //solo se non in landscape
+                    if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+                        TextView prezzo = findViewById(R.id.prezzo);
+                        TextView varianza = findViewById(R.id.varianza);
+                        ImageView imageView = findViewById(R.id.freccia);
+                        varianza.setText(res.second);
+                        prezzo.setText(curr_price);
+                        if (res.first) {
+                            varianza.setTextColor(Color.GREEN);
+                            imageView.setImageResource(R.drawable.ic_upper);
+                        } else {
+                            varianza.setTextColor(Color.RED);
+                            imageView.setImageResource(R.drawable.ic_down);
+                        }
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+            },error -> {});
+
+            volleyQueue.add(jsonObjectRequest);
+        },0,5, TimeUnit.SECONDS);
     }
 }

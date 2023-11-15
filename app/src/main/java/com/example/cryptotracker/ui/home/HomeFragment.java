@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment {
         prices.put(new Pair<>("matic-mainnet","WBTC"),"0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6");
 
     }
-    private Pair<Boolean,String> dailyChange(double yesterday, double today){
+    public static  Pair<Boolean,String> dailyChange(double yesterday, double today){
         if(today > yesterday){
             //aumento prezzo maggiore (verde)
             DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
