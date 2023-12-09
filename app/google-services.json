@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "127183490185",
+    "project_id": "cryptotrackerapplication",
+    "storage_bucket": "cryptotrackerapplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127183490185:android:771d75b32d36b20c2c0a58",
+        "android_client_info": {
+          "package_name": "com.example.cryptotracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0mW6ku8mCzvFdQGinH1HMiDVBsJXy-1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,6 +2,7 @@ package com.example.cryptotracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.cryptotracker.Connections.MongoClientConnection;
+
+import org.bson.Document;
 
 public class Login extends AppCompatActivity {
 
@@ -81,8 +86,9 @@ public class Login extends AppCompatActivity {
 
     // Esempio di metodo per eseguire il login (sostituisci con la tua logica di autenticazione)
     private boolean performLogin(String email, String password) {
-        // Aggiungi il codice per verificare l'autenticazione
-        // Restituisci true se l'autenticazione ha successo, altrimenti false
+//        MongoClientConnection dbConnection = new MongoClientConnection();
+//        Document user = dbConnection.findUser(email);
+//        Log.d("User", "kek" + user);
         return true;
     }
 }
