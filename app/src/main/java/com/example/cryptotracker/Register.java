@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Register extends AppCompatActivity {
     private String tempPhoto = "Default-photo";
+    private TextView textViewLogin;
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
             registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                 // Callback is invoked after the user selects a media item or closes the
@@ -99,11 +101,28 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
         Button btn = findViewById(R.id.button);
+        textViewLogin = findViewById(R.id.textViewLogin);
+
         btn.setOnClickListener(view -> pickMedia.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                 .build()));
 
+        textViewLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Chiamata al metodo per gestire la registrazione
+                handleLogin();
+            }
+        });
+
+
+    }
+
+    private void handleLogin() {
+        Intent myIntent = new Intent(Register.this, Login.class);
+        Register.this.startActivity(myIntent);
     }
 
 }

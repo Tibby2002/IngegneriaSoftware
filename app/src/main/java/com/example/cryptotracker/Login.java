@@ -75,8 +75,8 @@ public class Login extends AppCompatActivity {
 
     // Metodo per gestire la registrazione
     private void handleRegistration() {
-        // Aggiungi il codice per gestire la registrazione
-        Toast.makeText(this, "Implementa la registrazione", Toast.LENGTH_SHORT).show();
+        Intent myIntent = new Intent(Login.this, Register.class);
+        Login.this.startActivity(myIntent);
     }
 
     // Esempio di metodo per eseguire il login (sostituisci con la tua logica di autenticazione)

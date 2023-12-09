@@ -139,4 +139,13 @@
         app:layout_constraintTop_toBottomOf="@+id/button"
         android:onClick="SaveRegisterInformation" />
 
+    <TextView
+        android:id="@+id/textViewLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button2"
+        android:layout_marginTop="16dp"
+        android:text="Hai già un account? Effettua l'accesso"
+        android:textColor="@android:color/darker_gray"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
