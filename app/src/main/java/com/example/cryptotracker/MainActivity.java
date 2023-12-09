@@ -144,10 +144,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         String usr = name + " " + surname;
-        ImageView img = (ImageView) findViewById(R.id.imageView);
-        if (!photo.equals("Default-photo") && !photo.equals(" ")) {
-            img.setImageIcon(Icon.createWithContentUri(photo));
-        }
+        // TODO: genera eccezione e l'app crasha
+//        ImageView img = (ImageView) findViewById(R.id.imageView);
+//        if (!photo.equals("Default-photo") && !photo.equals(" ")) {
+//            img.setImageIcon(Icon.createWithContentUri(photo));
+//        }
         NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.textNome);
