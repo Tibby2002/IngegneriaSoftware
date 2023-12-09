@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     RxDataStore<Preferences> dataStoreRX;
 
-    List<String> chain = List.of("Polygon","Ethereum","Solana","Bitcoin","BNB","Avalanche");
+    List<String> chain = List.of("Polygon", "Ethereum", "Solana", "Bitcoin", "BNB", "Avalanche");
 
-    public void showSettings(MenuItem item){
+    public void showSettings(MenuItem item) {
         MainActivity.this.startActivity(new Intent(MainActivity.this, Register.class));
     }
 
@@ -82,20 +82,20 @@ public class MainActivity extends AppCompatActivity {
             dataStoreRX = dataStoreSingleton.getDataStore();
         }
         dataStoreSingleton.setDataStore(dataStoreRX);
-        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                .getBoolean("isFirstRun", true);
 
-        if (isFirstRun) {
-            MainActivity.this.startActivity(new Intent(MainActivity.this, Register.class));
+        // Verifica se l'utente ha effettuato il login
+        if (!isUserLoggedIn()) {
+            // L'utente non ha effettuato il login, apri la pagina di login
+            startActivity(new Intent(MainActivity.this, Login.class));
+            finish(); // Chiudi l'activity corrente per evitare che l'utente possa tornare indietro
+            return;
         }
-        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                .putBoolean("isFirstRun", false).commit();
 
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
 
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
@@ -158,6 +158,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private boolean isUserLoggedIn() {
+        Boolean isLogged = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isLogged", false);
+
+        return isLogged;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -172,15 +179,15 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    private void calculateTotValue(){
+    private void calculateTotValue() {
         int[] count = {0};
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        for(String x : chain){
-            if(!getStringValue(x).equals("null")){
+        for (String x : chain) {
+            if (!getStringValue(x).equals("null")) {
                 count[0]++;
             }
         }
-        for(String x : chain) {
+        for (String x : chain) {
             String net = AddAssets.values.get(x);
             List<Double> values = new ArrayList<>();
             if (!getStringValue(x).equals("null")) {
@@ -192,39 +199,38 @@ public class MainActivity extends AppCompatActivity {
                         response -> {
                             JSONObject obj = null;
                             try {
-                                String jsonString =  response.get("data").toString();
+                                String jsonString = response.get("data").toString();
                                 obj = new JSONObject(jsonString);
                                 JSONArray arr = obj.getJSONArray("items");
-                                for (int i = 0; i < arr.length(); i++)
-                                {
+                                for (int i = 0; i < arr.length(); i++) {
                                     String temp = arr.getJSONObject(i).getString("pretty_quote");
                                     String valid_string = temp.subSequence(1, temp.length()).toString();
-                                    Double value = Double.parseDouble(valid_string.replaceAll(",","").equals("ull") ? "0" : valid_string.replaceAll(",",""));
+                                    Double value = Double.parseDouble(valid_string.replaceAll(",", "").equals("ull") ? "0" : valid_string.replaceAll(",", ""));
                                     values.add(value);
                                 }
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
                             count[0]--;
-                            if(count[0] == 0){
+                            if (count[0] == 0) {
                                 Double tot = 0.;
-                                for(Double y : values){
+                                for (Double y : values) {
                                     tot += y;
                                 }
                                 TextView value = findViewById(R.id.value);
-                                String r = String.format("$%,.2f",tot);
+                                String r = String.format("$%,.2f", tot);
                                 value.setText(r);
                             }
                         },
                         error -> {
                             count[0]--;
-                            if(count[0] == 0){
+                            if (count[0] == 0) {
                                 Double tot = 0.;
-                                for(Double y : values){
+                                for (Double y : values) {
                                     tot += y;
                                 }
                                 TextView value = findViewById(R.id.value);
-                                String r = String.format("$%,.2f",tot);
+                                String r = String.format("$%,.2f", tot);
                                 value.setText(r);
                             }
                         }
@@ -234,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     String getStringValue(String Key) {
         Preferences.Key<String> PREF_KEY = PreferencesKeys.stringKey(Key);
         Single<String> value = dataStoreRX.data().firstOrError().map(prefs -> prefs.get(PREF_KEY)).onErrorReturnItem("null");
