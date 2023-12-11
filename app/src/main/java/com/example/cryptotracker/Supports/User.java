@@ -34,11 +34,6 @@ public class User {
 
     }
 
-
-
-
-
-
     class Wallet{
         public String network;
         public String address;
