@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 
 public class Logout extends Fragment {
@@ -59,6 +61,8 @@ public class Logout extends Fragment {
                 .edit()
                 .putBoolean("isLogged", false)
                 .apply();
+
+        FirebaseAuth.getInstance().signOut();
 
         // Avvia l'activity di login dopo il logout
         Intent loginIntent = new Intent(requireContext(), Login.class);

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "127183490185",
+    "firebase_url": "https://cryptotrackerapplication-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "cryptotrackerapplication",
     "storage_bucket": "cryptotrackerapplication.appspot.com"
   },
@@ -12,7 +13,12 @@
           "package_name": "com.example.cryptotracker"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "127183490185-2it1h281jh2f139r2pmci814qro9i6is.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC0mW6ku8mCzvFdQGinH1HMiDVBsJXy-1U"
@@ -20,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127183490185-2it1h281jh2f139r2pmci814qro9i6is.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
