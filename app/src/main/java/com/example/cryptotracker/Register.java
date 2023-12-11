@@ -1,8 +1,11 @@
 package com.example.cryptotracker;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,6 +18,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cryptotracker.Supports.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
 public class Register extends AppCompatActivity {
     private String tempPhoto = "Default-photo";
     private TextView textViewLogin;
+    private FirebaseAuth mAuth;
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
             registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                 // Callback is invoked after the user selects a media item or closes the
@@ -35,71 +46,40 @@ public class Register extends AppCompatActivity {
                 }
             });
 
-    private void SaveOnFile(String... s) throws IOException {
-        File path = this.getFilesDir();
-        File file = new File(path, "settings.txt");
-        FileOutputStream stream = new FileOutputStream(file);
-        try {
-            for (String arg : s) {
-                if (arg.equals("password")) {
-                    // Codifica la password in Base64 prima di scriverla
-                    byte[] passwordBytes = arg.getBytes();
-                    String encodedPassword = Base64.encodeToString(passwordBytes, Base64.DEFAULT);
-                    stream.write(encodedPassword.getBytes());
-                } else {
-                    stream.write(arg.getBytes());
-                }
-                stream.write("\n".getBytes());
-            }
-        } finally {
-            stream.close();
-        }
-    }
-
-    private String hashPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedhash = digest.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : encodedhash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public void SaveRegisterInformation(View view) {
         String name = ((EditText) findViewById(R.id.nomeText)).getText().toString();
         String surname = ((EditText) findViewById(R.id.cognomeText)).getText().toString();
         String email = ((EditText) findViewById(R.id.emailText)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
 
-        // Hash password before saving
-        Log.d("Password", "Not hashed " + password);
-        String hashedPassword = hashPassword(password);
-        Log.d("Password", "Hashed " + hashedPassword);
+        User user = new User(email, name, surname);
+        String userId = email.split("@")[0];
 
-        try {
-            SaveOnFile(name, surname, email, hashedPassword, tempPhoto);
-        } catch (IOException e) {
-            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                    .putBoolean("isFirstRun", false).commit();
-            Toast.makeText(this, "reinserire Tutti i dati a causa di un errore", Toast.LENGTH_LONG).show();
-            recreate();
-        }
-        Intent myIntent = new Intent(Register.this, MainActivity.class);
-        Register.this.startActivity(myIntent);
+        user.writeNewUser(userId, name, surname, email);
 
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            Intent myIntent = new Intent(Register.this, MainActivity.class);
+                            Register.this.startActivity(myIntent);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(Register.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_register);
 
         Button btn = findViewById(R.id.button);

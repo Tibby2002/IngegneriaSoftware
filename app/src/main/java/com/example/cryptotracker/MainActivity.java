@@ -25,7 +25,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.cryptotracker.Supports.DataStoreSingleton;
 import com.example.cryptotracker.Supports.NumbersView;
-import com.example.cryptotracker.Supports.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -59,7 +58,6 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Single;
 
 public class MainActivity extends AppCompatActivity {
-    private User user;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
