@@ -37,10 +37,10 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Inizializza le view
-        editTextEmail = findViewById(R.id.editTextEmail);
-        editTextPassword = findViewById(R.id.editTextPassword);
-        buttonLogin = findViewById(R.id.buttonLogin);
-        textViewRegister = findViewById(R.id.textViewRegister);
+        editTextEmail = findViewById(R.id.email);
+        editTextPassword = findViewById(R.id.password);
+        buttonLogin = findViewById(R.id.login);
+        textViewRegister = findViewById(R.id.register);
 
         // Aggiungi un listener al pulsante di login
         buttonLogin.setOnClickListener(new View.OnClickListener() {
