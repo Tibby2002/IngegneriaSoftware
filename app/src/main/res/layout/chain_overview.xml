@@ -1,76 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingDefaultResource">
+    android:background="#252850">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Panoramica andamento prezzi"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="105dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:text="%24h:"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:layout_marginLeft="323dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:text="Prezzo:"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:layout_marginLeft="225dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:text="Sigla:"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:layout_marginLeft="151dp"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Panoramica andamento prezzi"
+                android:textSize="18sp"
+                android:textColor="#9C9DB5"
+                android:layout_marginBottom="24dp"
+                android:gravity="center" />
 
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:text="Nome:"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:layout_marginLeft="65dp"
+            <!-- Table Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="16dp">
 
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:text="Icona:"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:layout_marginLeft="1dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Icona"
+                    android:textColor="#9C9DB5"
+                    android:textSize="14sp" />
 
-        />
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
-        android:layout_marginBottom="85dp"
-        android:clickable="true"
-        android:id="@+id/list_overview"
-        />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Nome"
+                    android:textColor="#9C9DB5"
+                    android:textSize="14sp" />
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sigla"
+                    android:textColor="#9C9DB5"
+                    android:textSize="14sp" />
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Prezzo"
+                    android:textColor="#9C9DB5"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="%24h"
+                    android:textColor="#9C9DB5"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- List of Items -->
+            <ListView
+                android:id="@+id/list_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="#393E7D"
+                android:dividerHeight="1dp"
+                android:scrollbars="none" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

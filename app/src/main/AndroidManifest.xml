@@ -53,6 +53,7 @@
             android:theme="@style/Theme.CryptoTracker.NoActionBar" />
         <activity
             android:name=".Register"
+            android:label="Register Page"
             android:exported="false" />
         <activity
             android:name=".Login"
