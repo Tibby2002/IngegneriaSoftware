@@ -1,99 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".TokenPriceOverview">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="@color/black"
-    android:text="Informazioni Generali Token"
-    android:layout_marginStart="100dp"
-    android:layout_marginTop="30dp"
-    />
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/name"
-    android:layout_marginTop="85dp"
-    android:layout_marginStart="70dp"
-    />
+    android:background="#252850">
+
     <TextView
+        android:id="@+id/tvTokenInformationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/prezzo"
-        android:layout_marginTop="130dp"
-        android:layout_marginStart="75dp"
-        />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/varianza"
-            android:layout_marginTop="130dp"
-            android:layout_marginStart="295dp"
+        android:text="Informazioni Generali Token"
+        android:textSize="24sp"
+        android:textColor="#9C9DB5"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
-            />
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/tvTokenInformationTitle"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/prezzo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/varianza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/prezzo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
     <ImageView
         android:id="@+id/freccia"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="-10dp"
         android:layout_toEndOf="@+id/varianza"
-        android:layout_marginTop="132dp" />
+        android:layout_alignBottom="@+id/varianza" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
         android:id="@+id/logo_token"
-        android:layout_marginTop="165dp"
-        android:layout_marginStart="65dp"
-        />
-<TextView
-    android:textColor="@color/black"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Nome:"
-    android:layout_marginTop="85dp"
-    android:layout_marginStart="20dp"
-    />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/varianza"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Prezzo:"
-        android:textColor="@color/black"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="130dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="%24h:"
-        android:textColor="@color/black"
-        android:layout_marginTop="130dp"
-        android:layout_marginStart="250dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logo:"
-        android:textColor="@color/black"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="170dp"
-        />
-    <TextView
+        android:id="@+id/tvGraphTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Grafico del Prezzo annuale"
-        android:textColor="@color/black"
-        android:layout_marginTop="250dp"
-        android:layout_marginStart="105dp"
-        />
+        android:textSize="24sp"
+        android:textColor="#9C9DB5"
+        android:layout_below="@+id/logo_token"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="300dp"
-        />
+        android:layout_below="@+id/tvGraphTitle"
+        android:layout_marginTop="16dp" />
 </RelativeLayout>

@@ -25,6 +25,7 @@
             android:exported="false" />
         <activity
             android:name=".TokenPriceOverview"
+            android:label="Token Overview Page"
             android:exported="false" />
         <activity
             android:name=".PriceMonitoring"
