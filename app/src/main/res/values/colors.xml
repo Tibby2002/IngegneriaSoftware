@@ -12,4 +12,11 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+    <color name="colorPrimary">#252850</color>
+    <color name="colorPrimaryDark">#393E7D</color>
+    <color name="colorAccent">#9C9DB5</color>
+    <color name="textIcons">#FFFFFF</color>
+    <color name="drawerIcons">#9C9DB5</color>
+    <color name="drawerBackground">#393E7D</color>
+    <color name="drawerItemText">#FFFFFF</color>
 </resources>
