@@ -3,34 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#252850"
     tools:context=".CancellaAddress">
-
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:text="@string/cancella_un_indirizzo"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="50dp"/>
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="45dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="#9C9DB5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/blockchain"
-        android:layout_marginTop="130dp"
-        android:layout_marginStart="10dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/indirizzo"
-        android:layout_marginTop="130dp"
-        android:layout_marginStart="200dp"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="100dp"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/blockchain"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#9C9DB5" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/indirizzo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#9C9DB5" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/listViewx"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
-        android:clickable="true"
-        />
-
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="125dp"
+        android:divider="#9C9DB5"
+        android:dividerHeight="1dp"
+        android:padding="16dp"
+        android:scrollbars="vertical" />
 </FrameLayout>
