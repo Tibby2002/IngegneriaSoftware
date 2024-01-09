@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     List<String> chain = List.of("Polygon", "Ethereum", "Solana", "Bitcoin", "BNB", "Avalanche");
 
-    public void showSettings(MenuItem item) {
-        MainActivity.this.startActivity(new Intent(MainActivity.this, Register.class));
-    }
+//    public void showSettings(MenuItem item) {
+//        MainActivity.this.startActivity(new Intent(MainActivity.this, Register.class));
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
