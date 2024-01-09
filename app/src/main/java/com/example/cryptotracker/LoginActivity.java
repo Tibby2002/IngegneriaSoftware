@@ -21,7 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -88,8 +88,8 @@ public class Login extends AppCompatActivity {
         if (performLogin(email, password)) {
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                     .putBoolean("isLogged", true).commit();
-            Intent myIntent = new Intent(Login.this, MainActivity.class);
-            Login.this.startActivity(myIntent);
+            Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+            LoginActivity.this.startActivity(myIntent);
         } else {
             // Login fallito, mostra un messaggio di errore
             Toast.makeText(this, "Email o password errati", Toast.LENGTH_SHORT).show();
@@ -98,8 +98,8 @@ public class Login extends AppCompatActivity {
 
     // Metodo per gestire la registrazione
     private void handleRegistration() {
-        Intent myIntent = new Intent(Login.this, Register.class);
-        Login.this.startActivity(myIntent);
+        Intent myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+        LoginActivity.this.startActivity(myIntent);
     }
 
     // Esempio di metodo per eseguire il login (sostituisci con la tua logica di autenticazione)
@@ -116,7 +116,7 @@ public class Login extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(Login.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
 //                            updateUI(null);
                         }

@@ -18,12 +18,6 @@
             android:textColor="@color/drawerItemText"
             android:title="Monitoraggio Prezzi" />
         <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_logout"
-            android:iconTint="@color/drawerIcons"
-            android:textColor="@color/drawerItemText"
-            android:title="Logout" />
-        <item
             android:id="@+id/nav_wallet"
             android:icon="@drawable/ic_wallet"
             android:iconTint="@color/drawerIcons"

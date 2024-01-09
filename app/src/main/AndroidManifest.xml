@@ -53,11 +53,11 @@
             android:label="@string/title_activity_wallet_settings"
             android:theme="@style/Theme.CryptoTracker.NoActionBar" />
         <activity
-            android:name=".Register"
+            android:name=".RegisterActivity"
             android:label="Register Page"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".LoginActivity"
             android:label="Login Page"
             android:exported="true">
             <intent-filter>

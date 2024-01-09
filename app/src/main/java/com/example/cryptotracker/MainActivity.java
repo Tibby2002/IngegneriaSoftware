@@ -1,35 +1,22 @@
 package com.example.cryptotracker;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Pair;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.cryptotracker.Supports.DataStoreSingleton;
-import com.example.cryptotracker.Supports.NumbersView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
@@ -84,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         // Verifica se l'utente ha effettuato il login
         if (!isUserLoggedIn()) {
             // L'utente non ha effettuato il login, apri la pagina di login
-            startActivity(new Intent(MainActivity.this, Login.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish(); // Chiudi l'activity corrente per evitare che l'utente possa tornare indietro
             return;
         }

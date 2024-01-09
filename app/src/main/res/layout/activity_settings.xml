@@ -7,7 +7,7 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/nav_profile"
+        android:id="@+id/profileButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -17,10 +17,10 @@
         android:textColor="#FFFFFF" />
 
     <Button
-        android:id="@+id/action_settings_Fragment_to_logoutFragment"
+        android:id="@+id/logoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nav_profile"
+        android:layout_below="@id/profileButton"
         android:layout_marginTop="24dp"
         android:background="@drawable/button_background"
         android:padding="12dp"
