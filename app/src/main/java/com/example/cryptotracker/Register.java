@@ -2,15 +2,11 @@ package com.example.cryptotracker;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,34 +19,51 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class Register extends AppCompatActivity {
-    private String tempPhoto = "Default-photo";
+    private Button signUpButton;
     private TextView textViewLogin;
     private FirebaseAuth mAuth;
-    ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
-            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                // Callback is invoked after the user selects a media item or closes the
-                // photo picker.
-                if (uri != null) {
-                    Log.d("PhotoPicker", "Selected URI: " + uri);
-                } else {
-                    Log.d("PhotoPicker", "No media selected");
-                }
-            });
 
-    public void SaveRegisterInformation(View view) {
-        String name = ((EditText) findViewById(R.id.nomeText)).getText().toString();
-        String surname = ((EditText) findViewById(R.id.cognomeText)).getText().toString();
-        String email = ((EditText) findViewById(R.id.emailText)).getText().toString();
-        String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        setContentView(R.layout.activity_register);
+
+        signUpButton = findViewById(R.id.signUpButton);
+        textViewLogin = findViewById(R.id.textViewLogin);
+
+        textViewLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleLogin();
+            }
+        });
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveRegisterInformation();
+            }
+        });
+    }
+
+    private void handleLogin() {
+        Intent intent = new Intent(Register.this, Login.class);
+        startActivity(intent);
+    }
+
+    private void saveRegisterInformation() {
+        String name = getEditTextValue(R.id.nomeText);
+        String surname = getEditTextValue(R.id.cognomeText);
+        String email = getEditTextValue(R.id.emailText);
+        String password = getEditTextValue(R.id.passwordText);
+        String confirmPassword = getEditTextValue(R.id.confirmPasswordText);
+
+        if (!validateInput(name, surname, email, password, confirmPassword)) {
+            return;
+        }
 
         User user = new User(email, name, surname);
         String userId = email.split("@")[0];
@@ -64,8 +77,8 @@ public class Register extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            Intent myIntent = new Intent(Register.this, MainActivity.class);
-                            Register.this.startActivity(myIntent);
+                            Intent intent = new Intent(Register.this, MainActivity.class);
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -76,33 +89,45 @@ public class Register extends AppCompatActivity {
                 });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        setContentView(R.layout.activity_register);
-
-        Button btn = findViewById(R.id.button);
-        textViewLogin = findViewById(R.id.textViewLogin);
-
-        btn.setOnClickListener(view -> pickMedia.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build()));
-
-        textViewLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Chiamata al metodo per gestire la registrazione
-                handleLogin();
-            }
-        });
-
-
+    private String getEditTextValue(int editTextId) {
+        return ((EditText) findViewById(editTextId)).getText().toString().trim();
     }
 
-    private void handleLogin() {
-        Intent myIntent = new Intent(Register.this, Login.class);
-        Register.this.startActivity(myIntent);
+    private boolean validateInput(String name, String surname, String email, String password, String confirmPassword) {
+        if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (password.length() < 8) {
+            Toast.makeText(this, "Password must be at least 6 characters long", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+//        TODO: SCOMMENTARE
+//        if (!password.matches(".*[A-Z].*")) {
+//            Toast.makeText(this, "Password must contain at least one uppercase letter", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//
+//        if (!password.matches(".*\\d.*")) {
+//            Toast.makeText(this, "Password must contain at least one digit", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//
+//        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\",.<>/?].*")) {
+//            Toast.makeText(this, "Password must contain at least one special character", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "The two passwords do not match each other", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Add more validation as needed
+
+        return true;
     }
 
 }

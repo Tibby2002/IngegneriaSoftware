@@ -8,41 +8,32 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
-            android:title="Home"
             android:iconTint="@color/drawerIcons"
-            android:textColor="@color/drawerItemText" />
+            android:textColor="@color/drawerItemText"
+            android:title="Home" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_notifications"
-            android:title="Monitoraggio Prezzi"
             android:iconTint="@color/drawerIcons"
-            android:textColor="@color/drawerItemText" />
+            android:textColor="@color/drawerItemText"
+            android:title="Monitoraggio Prezzi" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
-            android:title="Logout"
             android:iconTint="@color/drawerIcons"
-            android:textColor="@color/drawerItemText" />
-
-        <!--        <item-->
-        <!--            android:id="@+id/nav_wallet"-->
-        <!--            android:icon="@string/menu_slideshow"-->
-        <!--            android:title="Wallet" />-->
-        <!--        <item-->
-        <!--            android:id="@+id/nav_transactions"-->
-        <!--            android:icon="@string/menu_slideshow"-->
-        <!--            android:title="Transazioni" />-->
-        <!--        <item-->
-        <!--            android:id="@+id/nav_conversion"-->
-        <!--            android:icon="@string/menu_slideshow"-->
-        <!--            android:title="Conversione" />-->
-        <!--        <item-->
-        <!--            android:id="@+id/nav_settings"-->
-        <!--            android:icon="@string/menu_slideshow"-->
-        <!--            android:title="Impostazioni" />-->
-        <!--        <item-->
-
+            android:textColor="@color/drawerItemText"
+            android:title="Logout" />
+        <item
+            android:id="@+id/nav_wallet"
+            android:icon="@drawable/ic_wallet"
+            android:iconTint="@color/drawerIcons"
+            android:textColor="@color/drawerItemText"
+            android:title="Wallet" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:iconTint="@color/drawerIcons"
+            android:textColor="@color/drawerItemText"
+            android:title="Impostazioni" />
     </group>
-
-
 </menu>

@@ -11,6 +11,8 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_wallet">Wallet</string>
+    <string name="menu_settings">Impostazioni</string>
     <string name="name_reg">Nome:</string>
     <string name="title_activity_wallet_settings">WalletSettings</string>
     <string name="tab_text_1">Modifica</string>
