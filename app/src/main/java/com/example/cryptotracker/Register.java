@@ -21,8 +21,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Register extends AppCompatActivity {
-    private Button signUpButton;
-    private TextView textViewLogin;
     private FirebaseAuth mAuth;
 
     @Override
@@ -31,8 +29,8 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_register);
 
-        signUpButton = findViewById(R.id.signUpButton);
-        textViewLogin = findViewById(R.id.textViewLogin);
+        Button signUpButton = findViewById(R.id.signUpButton);
+        TextView textViewLogin = findViewById(R.id.textViewLogin);
 
         textViewLogin.setOnClickListener(new View.OnClickListener() {
             @Override
