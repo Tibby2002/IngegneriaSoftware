@@ -1,7 +1,8 @@
 package com.example.cryptotracker.Supports;
 
 import com.example.cryptotracker.Connections.RTFirebase;
-import com.google.firebase.database.DatabaseReference;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Collection;
@@ -9,7 +10,6 @@ import java.util.Collection;
 @IgnoreExtraProperties
 public class User {
 
-    public String userId;
     public String email;
 
     public String name;
@@ -26,12 +26,19 @@ public class User {
         this.surname = surname;
     }
 
-    public void writeNewUser(String userId, String name, String surname, String email) {
+
+    public void writeNewUser(String userId, String name, String surname, String email) throws Exception {
         User user = new User(email, name, surname);
         RTFirebase rtFirebase = new RTFirebase();
 
-        rtFirebase.getDatabaseReference().child("users").child(userId).setValue(user);
+        String hashedUserId = Encrypt.hash(userId);
 
+        rtFirebase.getDatabaseReference().child("users").child(hashedUserId).setValue(user);
+    }
+
+    public interface UserCallback {
+        void onSuccess(User user);
+        void onFailure(String errorMessage);
     }
 
     class Wallet{

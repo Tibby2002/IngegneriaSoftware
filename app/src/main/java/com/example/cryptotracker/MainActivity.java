@@ -13,6 +13,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.cryptotracker.Supports.DataStoreSingleton;
+import com.example.cryptotracker.Supports.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -68,14 +69,11 @@ public class MainActivity extends AppCompatActivity {
         }
         dataStoreSingleton.setDataStore(dataStoreRX);
 
-        // Verifica se l'utente ha effettuato il login
         if (!isUserLoggedIn()) {
-            // L'utente non ha effettuato il login, apri la pagina di login
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish(); // Chiudi l'activity corrente per evitare che l'utente possa tornare indietro
+            finish();
             return;
         }
-
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -144,9 +142,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isUserLoggedIn() {
-        Boolean isLogged = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                .getBoolean("isLogged", false);
-
+        Boolean isLogged = SharedPreferencesManager.getBoolean(getApplicationContext(),
+                "isLogged", false);
         return isLogged;
     }
 

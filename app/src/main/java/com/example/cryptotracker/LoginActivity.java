@@ -15,6 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cryptotracker.Connections.RTFirebase;
+import com.example.cryptotracker.Supports.Encrypt;
+import com.example.cryptotracker.Supports.SharedPreferencesManager;
+import com.example.cryptotracker.Supports.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,8 +29,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextEmail;
     private EditText editTextPassword;
-    private Button buttonLogin;
-    private TextView textViewRegister;
     private FirebaseAuth mAuth;
 
 
@@ -36,26 +38,21 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_login);
 
-        // Inizializza le view
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
-        buttonLogin = findViewById(R.id.login);
-        textViewRegister = findViewById(R.id.register);
+        Button buttonLogin = findViewById(R.id.login);
+        TextView textViewRegister = findViewById(R.id.register);
 
-        // Aggiungi un listener al pulsante di login
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Chiamata al metodo per gestire il login
                 handleLogin();
             }
         });
 
-        // Aggiungi un listener al testo per la registrazione
         textViewRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Chiamata al metodo per gestire la registrazione
                 handleRegistration();
             }
         });
@@ -64,61 +61,58 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             currentUser.reload();
         }
     }
 
-    // Metodo per gestire il login
     private void handleLogin() {
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
 
-        // Esegui la validazione dei dati (puoi aggiungere ulteriori logiche qui)
-
-        // Esempio: verifica se i campi sono vuoti
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Inserisci email e password", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Esempio: esegui il login (sostituisci con la tua logica di autenticazione)
         if (performLogin(email, password)) {
-            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                    .putBoolean("isLogged", true).commit();
+//            Log.d("SHAREDPREF", "msg: " + SharedPreferencesManager.getString(getApplicationContext(), "name", "Pippo"));
             Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
             LoginActivity.this.startActivity(myIntent);
         } else {
-            // Login fallito, mostra un messaggio di errore
             Toast.makeText(this, "Email o password errati", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Metodo per gestire la registrazione
     private void handleRegistration() {
         Intent myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
         LoginActivity.this.startActivity(myIntent);
     }
 
-    // Esempio di metodo per eseguire il login (sostituisci con la tua logica di autenticazione)
     private boolean performLogin(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
+                            RTFirebase rtFirebase = new RTFirebase();
+                            rtFirebase.getDatabaseUserByUserId(Encrypt.hash(email), new User.UserCallback() {
+                                @Override
+                                public void onSuccess(User user) {
+                                    SharedPreferencesManager.saveAccessInformation(getApplicationContext(), user.name, user.surname, email);
+                                }
+
+                                @Override
+                                public void onFailure(String errorMessage) {
+                                    Log.e("Callback", "Error: " + errorMessage);
+                                    throw new RuntimeException();
+                                }
+                            });
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
                         }
                     }
                 });

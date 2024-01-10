@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cryptotracker.Supports.SharedPreferencesManager;
 import com.example.cryptotracker.Supports.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,7 +43,11 @@ public class RegisterActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveRegisterInformation();
+                try {
+                    saveRegisterInformation();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -52,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void saveRegisterInformation() {
+    private void saveRegisterInformation() throws Exception {
         String name = getEditTextValue(R.id.nomeText);
         String surname = getEditTextValue(R.id.cognomeText);
         String email = getEditTextValue(R.id.emailText);
@@ -64,22 +69,18 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         User user = new User(email, name, surname);
-        String userId = email.split("@")[0];
 
-        user.writeNewUser(userId, name, surname, email);
+        user.writeNewUser(email, name, surname, email);
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
+                            SharedPreferencesManager.saveAccessInformation(getApplicationContext(), name, surname, email);
                             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -127,5 +128,4 @@ public class RegisterActivity extends AppCompatActivity {
 
         return true;
     }
-
 }
