@@ -27,7 +27,7 @@ public class User {
     }
 
 
-    public void writeNewUser(String userId, String name, String surname, String email) throws Exception {
+    public void writeNewUser(String userId, String name, String surname, String email) {
         User user = new User(email, name, surname);
         RTFirebase rtFirebase = new RTFirebase();
 
