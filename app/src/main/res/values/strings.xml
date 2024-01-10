@@ -28,5 +28,10 @@
     <string name="title_activity_full_screen_price_token">FullScreenPriceToken</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="surname">Cognome</string>
+    <string name="change_password">Cambio Password</string>
+    <string name="name">Nome</string>
+    <string name="confirm">Conferma</string>
+    <string name="email">Email</string>
 
 </resources>
