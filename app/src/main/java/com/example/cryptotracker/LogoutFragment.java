@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.cryptotracker.Supports.SharedPreferencesManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public class LogoutFragment extends Fragment {
 
     private void performLogout() {
         deleteSettingsFile();
-        clearLoggedInStatus();
+        SharedPreferencesManager.clearPreferences(getContext());
         FirebaseAuth.getInstance().signOut();
         navigateToLoginActivity();
     }
@@ -48,19 +49,10 @@ public class LogoutFragment extends Fragment {
 
         if (file.exists()) {
             boolean deleted = file.delete();
-            if (deleted) {
-                Log.d("Logout", "Settings deleted correctly");
-            } else {
+            if (!deleted) {
                 throw new RuntimeException("Error deleting file");
             }
         }
-    }
-
-    private void clearLoggedInStatus() {
-        requireActivity().getSharedPreferences("PREFERENCE", AppCompatActivity.MODE_PRIVATE)
-                .edit()
-                .putBoolean("isLogged", false)
-                .apply();
     }
 
     private void navigateToLoginActivity() {
