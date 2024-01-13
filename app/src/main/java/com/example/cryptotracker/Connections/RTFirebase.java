@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.example.cryptotracker.Supports.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +22,7 @@ public class RTFirebase {
 
     private DatabaseReference mDatabase;
 
-    public RTFirebase(){
+    public RTFirebase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -51,4 +53,20 @@ public class RTFirebase {
         });
     }
 
+    public void updateUserData(String userId, String key, String value) {
+        DatabaseReference usersReference = mDatabase.child("users");
+        Log.d("UPDATE USER", "USER: " + usersReference.child(userId).child(key));
+        usersReference.child(userId).child(key).setValue(value).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("UPDATE USER", "Update successful!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("UPDATE USER", "Update failed: " + e.getMessage());
+                    }
+                });
+    }
 }

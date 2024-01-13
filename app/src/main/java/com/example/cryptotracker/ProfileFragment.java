@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.cryptotracker.Connections.RTFirebase;
+import com.example.cryptotracker.Supports.Encrypt;
 import com.example.cryptotracker.Supports.SharedPreferencesManager;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -51,7 +53,7 @@ public class ProfileFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAndUpdateUserData(name, surname);
+                checkAndUpdateUserData(email, name, surname);
                 Navigation.findNavController(v).navigate(R.id.nav_home);
             }
         });
@@ -65,12 +67,17 @@ public class ProfileFragment extends Fragment {
         emailText.setText(email);
     }
 
-    private void checkAndUpdateUserData(String name, String surname) {
-        if (!name.equals(nameText.getText().toString())) {
-            SharedPreferencesManager.saveString(getContext(), "name", nameText.getText().toString());
-        }
-        if (!surname.equals(surnameText.getText().toString())) {
-            SharedPreferencesManager.saveString(getContext(), "surname", surnameText.getText().toString());
+    private void checkAndUpdateUserData(String email, String name, String surname) {
+        if (!name.equals(nameText.getText().toString()) || !surname.equals(surnameText.getText().toString())) {
+            RTFirebase rtFirebase = new RTFirebase();
+            if (!name.equals(nameText.getText().toString())) {
+                SharedPreferencesManager.saveString(getContext(), "name", nameText.getText().toString());
+                rtFirebase.updateUserData(Encrypt.hash(email), "name", nameText.getText().toString());
+            }
+            if (!surname.equals(surnameText.getText().toString())) {
+                SharedPreferencesManager.saveString(getContext(), "surname", surnameText.getText().toString());
+                rtFirebase.updateUserData(Encrypt.hash(email), "surname", surnameText.getText().toString());
+            }
         }
     }
 }
