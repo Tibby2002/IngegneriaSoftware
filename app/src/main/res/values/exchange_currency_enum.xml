@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exchangeCurrencyEnum">
+        <item>USDV</item>
+        <item>EURT</item>
+<!--        <item>CHF</item>-->
+<!--        <item>GBP</item>-->
+<!--        <item>EAD</item>-->
+<!--        <item>JPY</item>-->
+    </string-array>
+</resources>

@@ -23,7 +23,7 @@
         android:layout_below="@id/imageViewUserIcon"
         android:layout_marginTop="16dp"
         android:background="@drawable/edit_text_background"
-        android:hint="Email Address"
+        android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="12dp"
         android:textColorHint="#9C9DB5" />
@@ -48,7 +48,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/button_background"
         android:padding="12dp"
-        android:text="LOGIN"
+        android:text="Accedi"
         android:textColor="#FFFFFF" />
 
 
@@ -59,7 +59,7 @@
         android:layout_below="@id/login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
-        android:text="Don't have an account? Sign up"
+        android:text="Non hai un account? Registrati"
         android:textColor="#9C9DB5" />
 </RelativeLayout>
 

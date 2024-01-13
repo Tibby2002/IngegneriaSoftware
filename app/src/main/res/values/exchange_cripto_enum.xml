@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exchangeCriptoEnum">
+        <item>BTC</item>
+        <item>ETH</item>
+        <item>SOL</item>
+        <item>XRP</item>
+        <item>MATIC</item>
+        <item>ADA</item>
+        <item>DOGE</item>
+        <item>STX</item>
+        <item>MANA</item>
+        <item>SHIB</item>
+        <item>BONE</item>
+        <item>LTC</item>
+        <item>LINK</item>
+        <item>DOT</item>
+        <item>LUNC</item>
+    </string-array>
+</resources>

@@ -12,17 +12,24 @@
             android:textColor="@color/drawerItemText"
             android:title="Home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_notifications"
-            android:iconTint="@color/drawerIcons"
-            android:textColor="@color/drawerItemText"
-            android:title="Monitoraggio Prezzi" />
-        <item
             android:id="@+id/nav_wallet"
             android:icon="@drawable/ic_wallet"
             android:iconTint="@color/drawerIcons"
             android:textColor="@color/drawerItemText"
             android:title="Wallet" />
+        <item
+            android:id="@+id/nav_exchange"
+            android:icon="@drawable/ic_exchange"
+            android:iconTint="@color/drawerIcons"
+            android:textColor="@color/drawerItemText"
+            android:title="Conversione Crypto" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_notifications"
+            android:iconTint="@color/drawerIcons"
+            android:textColor="@color/drawerItemText"
+            android:title="Monitoraggio Prezzi" />
+
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"

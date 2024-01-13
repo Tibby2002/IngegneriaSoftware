@@ -8,6 +8,16 @@
     android:padding="16dp"
     tools:context=".RegisterActivity">
 
+    <ImageView
+        android:id="@+id/imageViewUserIcon"
+        android:layout_width="192dp"
+        android:layout_height="170dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo"
+        app:tint="#9C9DB5"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="16dp" />
+
     <EditText
         android:id="@+id/nomeText"
         android:layout_width="0dp"
@@ -17,9 +27,9 @@
         android:background="@drawable/edit_text_background"
         android:textColorHint="#9C9DB5"
         android:padding="12dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewUserIcon"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"/>
@@ -93,7 +103,7 @@
         android:id="@+id/signUpButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:text="Registrati"
         android:background="@drawable/button_background"
         android:textColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordText"

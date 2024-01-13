@@ -54,11 +54,9 @@
             android:theme="@style/Theme.CryptoTracker.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
-            android:label="Register Page"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:label="Login Page"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
