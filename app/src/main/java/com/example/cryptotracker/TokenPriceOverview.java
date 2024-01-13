@@ -53,18 +53,18 @@ public class TokenPriceOverview extends AppCompatActivity {
     RequestQueue volleyQueue;
 
 
-    private void populateGraphData(boolean landscape){
+    private void populateGraphData(boolean landscape) {
         LineChart mChart;
-        if(landscape){
+        if (landscape) {
             mChart = findViewById(R.id.line_chart_landscape);
-        }else{
+        } else {
             mChart = findViewById(R.id.line_chart);
         }
         mChart.animateX(3000, Easing.EasingOption.EaseInElastic);
         mChart.setTouchEnabled(true);
         mChart.setPinchZoom(true);
-        for(int i = 0; i < values.size(); i++){
-            entryGraph.add(new Entry(i,values.get(i)));
+        for (int i = 0; i < values.size(); i++) {
+            entryGraph.add(new Entry(i, values.get(i)));
         }
         LineDataSet set1;
         if (mChart.getData() != null &&
@@ -100,39 +100,44 @@ public class TokenPriceOverview extends AppCompatActivity {
             mChart.setData(data);
         }
     }
-    private void populateInformation(boolean landscape){
+
+    private void populateInformation(boolean landscape) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime year_ago = LocalDateTime.now().plusYears(-1);
         LocalDateTime now = LocalDateTime.now();
-        String url = "https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/"+getIntent().getExtras().getString("net")+"/USD/"+getIntent().getExtras().getString("token_address")+"/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK"+
-                "&from="+dtf.format(year_ago)+"&to="+dtf.format(now);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null, response -> {
-            try{
-            String jsonString =  response.get("data").toString();
-            JSONArray obj = new JSONArray(jsonString);
-            JSONObject obj1 = obj.getJSONObject(0);
-            JSONArray prices = obj1.getJSONArray("prices");
-            for(int i = prices.length()-1; i >= 0; i--){
-                values.add(Float.parseFloat(prices.getJSONObject(i).getString("price").replaceAll(",","")));
-            }
-            if(!landscape){
-                String curr_price = obj1.getJSONArray("prices").getJSONObject(0).getString("price");
-                String yesterday_price = obj1.getJSONArray("prices").getJSONObject(1).getString("price");
-                TextView varianza = findViewById(R.id.varianza);
-                if(Double.parseDouble(curr_price.replaceAll(",","")) >= Double.parseDouble(yesterday_price.replaceAll(",",""))){
-                    is_upper = true;
-                    varianza.setTextColor(Color.RED);
-                }else{
-                    varianza.setTextColor(Color.RED);
-                    is_upper = false;
+        String url = "https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/" + getIntent().getExtras().getString("net") + "/USD/" + getIntent().getExtras().getString("token_address") + "/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK" +
+                "&from=" + dtf.format(year_ago) + "&to=" + dtf.format(now);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+            try {
+                String jsonString = response.get("data").toString();
+                JSONArray obj = new JSONArray(jsonString);
+                JSONObject obj1 = obj.getJSONObject(0);
+                JSONArray prices = obj1.getJSONArray("prices");
+                for (int i = prices.length() - 1; i >= 0; i--) {
+                    values.add(Float.parseFloat(prices.getJSONObject(i).getString("price").replaceAll(",", "")));
                 }
+                if (!landscape) {
+                    String curr_price = obj1.getJSONArray("prices").getJSONObject(0).getString("price");
+                    String yesterday_price = obj1.getJSONArray("prices").getJSONObject(1).getString("price");
+                    TextView varianza = findViewById(R.id.varianza);
+                    if (Double.parseDouble(curr_price.replaceAll(",", "")) >= Double.parseDouble(yesterday_price.replaceAll(",", ""))) {
+                        is_upper = true;
+                        varianza.setTextColor(Color.RED);
+                    } else {
+                        varianza.setTextColor(Color.RED);
+                        is_upper = false;
+                    }
+                }
+                populateGraphData(landscape);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            populateGraphData(landscape);
-            }catch (JSONException e){e.printStackTrace();}
-        },error -> {});
+        }, error -> {
+        });
         volleyQueue.add(jsonObjectRequest);
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,54 +168,14 @@ public class TokenPriceOverview extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         refresh.shutdown();
     }
+
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         refresh.shutdown();
-    }
-    @Override
-    protected void onResume(){
-        super.onResume();
-        refresh.scheduleAtFixedRate(()->{
-            volleyQueue.cancelAll(request -> true);
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDateTime now = LocalDateTime.now();
-            String url = "https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/"+getIntent().getExtras().getString("net")+"/USD/"+getIntent().getExtras().getString("token_address")+"/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK"+
-                    "&from="+dtf.format(now.plusDays(-1))+"&to="+dtf.format(now);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null, response -> {
-                try{
-                    String jsonString =  response.get("data").toString();
-                    JSONArray obj = new JSONArray(jsonString);
-                    JSONObject obj1 = obj.getJSONObject(0);
-                    String curr_price = obj1.getJSONArray("prices").getJSONObject(0).getString("price");
-                    String yesterday_price = obj1.getJSONArray("prices").getJSONObject(1).getString("price");
-                    Pair<Boolean,String> res = HomeFragment.dailyChange(Double.parseDouble(yesterday_price.replaceAll(",","")),Double.parseDouble(curr_price.replaceAll(",","")));
-                    //solo se non in landscape
-                    if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-                        TextView prezzo = findViewById(R.id.prezzo);
-                        TextView varianza = findViewById(R.id.varianza);
-                        ImageView imageView = findViewById(R.id.freccia);
-                        varianza.setText(res.second);
-                        prezzo.setText(curr_price);
-                        if (res.first) {
-                            varianza.setTextColor(Color.GREEN);
-                            imageView.setImageResource(R.drawable.ic_upper);
-                        } else {
-                            varianza.setTextColor(Color.RED);
-                            imageView.setImageResource(R.drawable.ic_down);
-                        }
-                    }
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
-
-            },error -> {});
-
-            volleyQueue.add(jsonObjectRequest);
-        },0,5, TimeUnit.SECONDS);
     }
 }
