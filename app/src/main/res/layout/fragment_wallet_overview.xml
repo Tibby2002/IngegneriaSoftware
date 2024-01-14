@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#252850"
+    tools:context=".RegisterActivity">
+
+    <TextView
+        android:id="@+id/textViewHeaderWallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Il tuo Wallet"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textViewValueWallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewHeaderWallet"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:text="Valore Wallet: $0.000"
+        android:textSize="20sp"
+        android:textColor="#9C9DB5" />
+
+    <LinearLayout
+        android:id="@+id/layoutSwitchCoinCurr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewValueWallet"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/switchCoinCurr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="$"
+            android:textOn="₿"
+            android:textColor="#9C9DB5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutHeaderTitlesWallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutSwitchCoinCurr"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textViewSymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Simbolo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/textViewQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:text="Quantità"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/textViewValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:text="Valore"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewWallet"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/layoutHeaderTitlesWallet"
+        android:layout_above="@id/addNewAddress"
+        android:divider="#393E7D"
+        android:dividerHeight="1dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addNewAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:backgroundTint="#9C9DB5" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/modifyAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/addNewAddress"
+        android:layout_alignTop="@id/addNewAddress"
+        android:layout_marginEnd="16dp"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        app:backgroundTint="#9C9DB5" />
+
+</RelativeLayout>

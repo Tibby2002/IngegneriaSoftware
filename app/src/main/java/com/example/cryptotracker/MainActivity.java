@@ -53,10 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
     List<String> chain = List.of("Polygon", "Ethereum", "Solana", "Bitcoin", "BNB", "Avalanche");
 
-//    public void showSettings(MenuItem item) {
-//        MainActivity.this.startActivity(new Intent(MainActivity.this, Register.class));
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,14 +88,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity.this.startActivity(new Intent(MainActivity.this, WalletOverview.class));
-            }
-        });
 
         String name = " ", surname = " ", photo = " ";
 

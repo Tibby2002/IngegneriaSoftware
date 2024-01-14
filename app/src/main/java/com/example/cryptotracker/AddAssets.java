@@ -87,8 +87,7 @@ public class AddAssets extends AppCompatActivity {
                 response -> {
                     putStringValue(getNet(net),addr);
                     Toast.makeText(this,"Indirizzo aggiunto",Toast.LENGTH_LONG).show();
-                    AddAssets.this.startActivity(new Intent(AddAssets.this, WalletOverview.class));
-
+                    AddAssets.this.startActivity(new Intent(AddAssets.this, WalletOverviewFragment.class));
                 },
                 error -> {
                     Toast.makeText(this,"Indirizzo non valido, Riprovare!",Toast.LENGTH_LONG).show();
