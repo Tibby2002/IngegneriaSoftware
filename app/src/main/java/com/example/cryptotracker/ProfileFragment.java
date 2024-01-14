@@ -46,7 +46,7 @@ public class ProfileFragment extends Fragment {
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                performLogout();
+                Navigation.findNavController(v).navigate(R.id.nav_change_password);
             }
         });
 
