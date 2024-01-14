@@ -21,14 +21,8 @@
         android:theme="@style/Theme.CryptoTracker"
         tools:targetApi="31">
         <activity
-            android:name=".FullscreenPriceToken"
-            android:exported="false" />
-        <activity
             android:name=".TokenPriceOverview"
             android:label="Token Overview Page"
-            android:exported="false" />
-        <activity
-            android:name=".PriceMonitoring"
             android:exported="false" />
         <activity
             android:name=".ModifyAddresses"
@@ -37,21 +31,11 @@
             android:name=".WalletModify"
             android:exported="false" />
         <activity
-            android:name=".ModifyWallet"
-            android:exported="false"
-            android:label="@string/title_activity_modify_wallet"
-            android:theme="@style/Theme.CryptoTracker.NoActionBar" />
-        <activity
             android:name=".AddAssets"
             android:exported="false" />
-        <activity
-            android:name=".WalletOverview"
-            android:exported="false" />
-        <activity
-            android:name=".WalletSettings"
-            android:exported="false"
-            android:label="@string/title_activity_wallet_settings"
-            android:theme="@style/Theme.CryptoTracker.NoActionBar" />
+<!--        <activity-->
+<!--            android:name=".WalletOverview"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />

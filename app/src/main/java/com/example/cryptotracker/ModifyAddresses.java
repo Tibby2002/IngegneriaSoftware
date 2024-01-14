@@ -1,6 +1,6 @@
 package com.example.cryptotracker;
 
-import static com.example.cryptotracker.AddAssets.getNet;
+import static com.example.cryptotracker.Supports.Assets.getNet;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.datastore.preferences.core.MutablePreferences;
@@ -22,6 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.cryptotracker.Supports.Assets;
 import com.example.cryptotracker.Supports.DataStoreSingleton;
 
 import io.reactivex.rxjava3.core.Single;
@@ -41,7 +42,7 @@ public class ModifyAddresses extends AppCompatActivity {
     private void Check_Validate(String net, String addr){
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://api.covalenthq.com/v1/"+AddAssets.values.get(net)+"/address/"+addr+"/balances_v2/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK";
+        String url = "https://api.covalenthq.com/v1/"+ Assets.values.get(net)+"/address/"+addr+"/balances_v2/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -49,7 +50,7 @@ public class ModifyAddresses extends AppCompatActivity {
                 response -> {
                     putStringValue(net,addr);
                     Toast.makeText(this,"Indirizzo modificato con successo",Toast.LENGTH_LONG).show();
-                    this.startActivity(new Intent(this,WalletOverview.class));
+//                    this.startActivity(new Intent(this,WalletOverview.class));
                 },
                 error -> {
                     Toast.makeText(this,"Indirizzo non valido, Riprovare!",Toast.LENGTH_LONG).show();

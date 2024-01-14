@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class RTFirebase {
@@ -55,11 +57,9 @@ public class RTFirebase {
 
     public void updateUserData(String userId, String key, String value) {
         DatabaseReference usersReference = mDatabase.child("users");
-        Log.d("UPDATE USER", "USER: " + usersReference.child(userId).child(key));
         usersReference.child(userId).child(key).setValue(value).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("UPDATE USER", "Update successful!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -69,4 +69,59 @@ public class RTFirebase {
                     }
                 });
     }
+
+    public void updateUserAddress(String userId, String key, String address) {
+        DatabaseReference addressesReference = mDatabase.child("users").child(userId).child("addresses");
+        addressesReference.child(key).setValue(address).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("UPDATE USER", "Update failed: " + e.getMessage());
+                    }
+                });
+    }
+
+    public void deleteUserAddress(String userId, String key) {
+        DatabaseReference addressesReference = mDatabase.child("users").child(userId).child("addresses");;
+        addressesReference.child(key).removeValue().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("DELETE ADDRESS", "Delete failed: " + task.getException());
+            }
+        });
+    }
+
+    public void getAllAddresses(String userId, AddressCallback callback) {
+        DatabaseReference addressesReference = mDatabase.child("users").child(userId).child("addresses");
+
+        addressesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
+                        String key = addressSnapshot.getKey();
+                        String address = addressSnapshot.getValue(String.class);
+
+                        callback.onAddressReceived(key, address);
+                    }
+                } else {
+                    callback.onNoAddresses();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("GET ALL ADDRESSES", "Error getting addresses: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public interface AddressCallback {
+        void onAddressReceived(String key, String address);
+        void onNoAddresses();
+    }
+
 }

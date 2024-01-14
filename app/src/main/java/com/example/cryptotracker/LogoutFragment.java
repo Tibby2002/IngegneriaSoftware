@@ -24,21 +24,10 @@ import java.io.File;
 
 public class LogoutFragment extends Fragment {
 
-    RxDataStore<Preferences> dataStoreRX;
-    DataStoreSingleton dataStoreSingleton;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_logout, container, false);
-
-        dataStoreSingleton = DataStoreSingleton.getInstance();
-        if (dataStoreSingleton.getDataStore() == null) {
-            dataStoreRX = new RxPreferenceDataStoreBuilder(getContext(), "wallet").build();
-        } else {
-            dataStoreRX = dataStoreSingleton.getDataStore();
-        }
-        dataStoreSingleton.setDataStore(dataStoreRX);
 
         Button logoutButton = rootView.findViewById(R.id.buttonLogout);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -52,14 +41,9 @@ public class LogoutFragment extends Fragment {
     }
 
     private void performLogout() {
-        deleteAssets();
         SharedPreferencesManager.clearPreferences(getContext());
         FirebaseAuth.getInstance().signOut();
         navigateToLoginActivity();
-    }
-
-    private void deleteAssets() {
-        dataStoreSingleton.clearDataStore();
     }
 
     private void navigateToLoginActivity() {

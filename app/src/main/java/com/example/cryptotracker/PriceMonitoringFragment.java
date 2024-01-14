@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.cryptotracker.AddAssets;
 import com.example.cryptotracker.MainActivity;
 import com.example.cryptotracker.R;
+import com.example.cryptotracker.Supports.Assets;
 import com.example.cryptotracker.Supports.ForegroundService;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -164,7 +165,7 @@ public class PriceMonitoringFragment extends Fragment {
         RequestQueue volleyQueue = Volley.newRequestQueue(getContext());
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
-        String url = "https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/"+AddAssets.values.get(chain)+"/USD/"+token_addr+"/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK"+
+        String url = "https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/"+ Assets.values.get(chain)+"/USD/"+token_addr+"/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK"+
                 "&from="+dtf.format(now)+"&to="+dtf.format(now);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,response -> {
             Toast.makeText(getContext(), "Notifica impostata correttamente!", Toast.LENGTH_LONG).show();

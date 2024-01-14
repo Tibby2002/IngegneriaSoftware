@@ -4,21 +4,29 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.cryptotracker.Connections.RTFirebase;
+import com.example.cryptotracker.Supports.Assets;
 import com.example.cryptotracker.Supports.DataStoreSingleton;
+import com.example.cryptotracker.Supports.Encrypt;
 import com.example.cryptotracker.Supports.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.datastore.preferences.core.MutablePreferences;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
@@ -42,6 +50,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.core.Single;
 
@@ -60,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         DataStoreSingleton dataStoreSingleton = DataStoreSingleton.getInstance();
         if (dataStoreSingleton.getDataStore() == null) {
             dataStoreRX = new RxPreferenceDataStoreBuilder(this, "wallet").build();
+//            updateAddressWithDBValues();
         } else {
             dataStoreRX = dataStoreSingleton.getDataStore();
         }
@@ -79,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_price_monitoring, R.id.nav_exchange, R.id.nav_settings, R.id.nav_wallet)
                 .setOpenableLayout(drawer)
@@ -128,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         for (String x : chain) {
-            String net = AddAssets.values.get(x);
+            String net = Assets.values.get(x);
             List<Double> values = new ArrayList<>();
             if (!getStringValue(x).equals("null")) {
                 String url = "https://api.covalenthq.com/v1/" + net + "/address/" + getStringValue(x) + "/balances_v2/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK";
@@ -186,4 +194,74 @@ public class MainActivity extends AppCompatActivity {
         Single<String> value = dataStoreRX.data().firstOrError().map(prefs -> prefs.get(PREF_KEY)).onErrorReturnItem("null");
         return value.blockingGet();
     }
+
+//    private void updateAddressWithDBValues() {
+//        RTFirebase rtFirebase = new RTFirebase();
+//
+//        rtFirebase.getAllAddresses(
+//                Encrypt.hash(SharedPreferencesManager.getString(getApplicationContext(), "email", "email")),
+//                new RTFirebase.AddressCallback() {
+//                    @Override
+//                    public void onAddressReceived(String key, String address) {
+//                        GetHTTPRequest(key, address);
+//                    }
+//
+//                    @Override
+//                    public void onNoAddresses() {
+//                        Log.d("Address", "No addresses found for the user");
+//                    }
+//                });
+//    }
+//
+//    private void GetHTTPRequest(String net, String addr) {
+//
+//        RequestQueue volleyQueue = Volley.newRequestQueue(MainActivity.this);
+//        String url = "https://api.covalenthq.com/v1/" + Assets.values.get(net) + "/address/" + addr + "/balances_v2/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK";
+//        Log.d("API", "https://api.covalenthq.com/v1/" + Assets.values.get(net) + "/address/" + addr + "/balances_v2/?key=cqt_rQ8GxWCJ4GjfhJc3FJj8Yh6DfbMK");
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+//                Request.Method.GET,
+//                url,
+//                null,
+//                response -> {
+//                    putStringValue(net, addr);
+//                },
+//                error -> {
+//                    Toast.makeText(this, "Indirizzo non valido, Riprovare!", Toast.LENGTH_LONG).show();
+//                }
+//        );
+//
+//        volleyQueue.add(jsonObjectRequest);
+//
+//    }
+//
+//    private boolean putStringValue(String Key, String value) {
+//        boolean returnvalue;
+//        Preferences.Key<String> PREF_KEY = PreferencesKeys.stringKey(Key);
+//        Single<Preferences> updateResult = dataStoreRX.updateDataAsync(prefsIn -> {
+//            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+//            mutablePreferences.set(PREF_KEY, value);
+//            return Single.just(mutablePreferences);
+//        }).onErrorReturnItem(pref_error);
+//        returnvalue = updateResult.blockingGet() != pref_error;
+//        return returnvalue;
+//    }
+//
+//    Preferences pref_error = new Preferences() {
+//        @Override
+//        public <T> boolean contains(@NonNull Key<T> key) {
+//            return false;
+//        }
+//
+//        @Nullable
+//        @Override
+//        public <T> T get(@NonNull Key<T> key) {
+//            return null;
+//        }
+//
+//        @NonNull
+//        @Override
+//        public Map<Key<?>, Object> asMap() {
+//            return null;
+//        }
+//    };
 }
