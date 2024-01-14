@@ -34,6 +34,8 @@ import com.example.cryptotracker.Supports.AddressesDelete;
 import com.example.cryptotracker.Supports.DataStoreSingleton;
 import com.example.cryptotracker.Supports.DeleteAddressesAdapter;
 import com.example.cryptotracker.Supports.Encrypt;
+import com.example.cryptotracker.Supports.ModifyView;
+import com.example.cryptotracker.Supports.ModifyViewAdapter;
 import com.example.cryptotracker.Supports.NumbersView;
 import com.example.cryptotracker.Supports.SharedPreferencesManager;
 
@@ -48,11 +50,10 @@ import java.util.Map;
 import io.reactivex.rxjava3.core.Single;
 
 public class CancellaAddress extends Fragment {
-
-    public static List<Pair<String, String>> addresses = new ArrayList<>();;
     ArrayList<AddressesDelete> arrayList;
     DeleteAddressesAdapter numbersArrayAdapter;
     RTFirebase rtFirebase;
+    View rootView;
 
     void removeKey(String key) {
         rtFirebase.deleteUserAddress(
@@ -66,10 +67,10 @@ public class CancellaAddress extends Fragment {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        removeKey(addresses.get(position).first);
+                        removeKey(WalletOverviewFragment.addresses.get(position).first);
                         arrayList.clear();
-                        addresses.remove(addresses.get(position));
-                        for (Pair<String, String> x : addresses)
+                        WalletOverviewFragment.addresses.remove(WalletOverviewFragment.addresses.get(position));
+                        for (Pair<String, String> x : WalletOverviewFragment.addresses)
                             arrayList.add(new AddressesDelete(x.first, x.second));
                         numbersArrayAdapter.notifyDataSetChanged();
                     }
@@ -79,15 +80,15 @@ public class CancellaAddress extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cancella_address, container, false);
+        rootView = inflater.inflate(R.layout.fragment_cancella_address, container, false);
         rtFirebase = new RTFirebase();
 
         arrayList = new ArrayList<>();
 
-        for (Pair<String, String> x : addresses)
+        for (Pair<String, String> x : WalletOverviewFragment.addresses)
             arrayList.add(new AddressesDelete(x.first, x.second));
         numbersArrayAdapter = new DeleteAddressesAdapter(getActivity(), arrayList);
-        ListView numbersListView = view.findViewById(R.id.listViewx);
+        ListView numbersListView = rootView.findViewById(R.id.listViewx);
         numbersListView.setAdapter(numbersArrayAdapter);
         numbersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,6 +96,18 @@ public class CancellaAddress extends Fragment {
                 press(position);
             }
         });
-        return view;
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        arrayList.clear();
+
+        for (Pair<String, String> x : WalletOverviewFragment.addresses)
+            arrayList.add(new AddressesDelete(x.first, x.second));
+        numbersArrayAdapter = new DeleteAddressesAdapter(getActivity(), arrayList);
+        ListView numbersListView = rootView.findViewById(R.id.listViewx);
+        numbersListView.setAdapter(numbersArrayAdapter);
     }
 }

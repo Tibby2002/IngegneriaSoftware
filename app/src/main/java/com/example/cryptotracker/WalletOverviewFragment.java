@@ -53,22 +53,23 @@ public class WalletOverviewFragment extends Fragment {
     Double totValue = 0.;
     Double btcValue = 0.;
     RTFirebase rtFirebase;
+    public static List<Pair<String,String>> addresses = new ArrayList<>();
+    public boolean switchIsChecked = false;
+
+    View rootView;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_wallet_overview, container, false);
+        rootView = inflater.inflate(R.layout.fragment_wallet_overview, container, false);
         FloatingActionButton addNewAddressButton = rootView.findViewById(R.id.addNewAddress);
         rtFirebase = new RTFirebase();
         arrayList = new ArrayList<>();
-        numbersArrayAdapter = new NumbersViewAdapter(getContext(), arrayList);
-        populateWallet(rootView, arrayList, numbersArrayAdapter);
-        ListView numbersListView = rootView.findViewById(R.id.listViewWallet);
-        numbersListView.setAdapter(numbersArrayAdapter);
 
         FloatingActionButton modifyAddressButton = rootView.findViewById(R.id.modifyAddress);
         Switch switchCoinCurr = rootView.findViewById(R.id.switchCoinCurr);
         switchCoinCurr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                switchIsChecked = isChecked;
                 if (isChecked) {
                     getBTCPrice(rootView);
                 } else {
@@ -95,13 +96,31 @@ public class WalletOverviewFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        arrayList.clear();
+        totValue = 0.0;
+
+        numbersArrayAdapter = new NumbersViewAdapter(getContext(), arrayList);
+        populateWallet(rootView, arrayList, numbersArrayAdapter);
+        ListView numbersListView = rootView.findViewById(R.id.listViewWallet);
+        numbersListView.setAdapter(numbersArrayAdapter);
+
+        if (switchIsChecked) {
+            getBTCPrice(rootView);
+        } else {
+            getUSDPrice(rootView);
+        }
+    }
+
     private void populateWallet(View rootView, ArrayList<NumbersView> arrayList, NumbersViewAdapter v) {
         rtFirebase.getAllAddresses(
                 Encrypt.hash(SharedPreferencesManager.getString(getContext(), "email", "email")),
                 new RTFirebase.AddressCallback() {
                     @Override
                     public void onAddressReceived(String key, String address) {
-                        CancellaAddress.addresses.add(new Pair<>(key, address));
+                        addresses.add(new Pair<>(key, address));
                         CovalentAPI.getBalanceAsset(getContext(), key, address,
                                 new CovalentAPI.OnRequestSuccess() {
                                     @Override
@@ -147,6 +166,7 @@ public class WalletOverviewFragment extends Fragment {
 
                     @Override
                     public void onNoAddresses() {
+                        addresses.clear();
                         Log.d("FIREBASE getAllAddresses", "No address found.");
                     }
                 });
