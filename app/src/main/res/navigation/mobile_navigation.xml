@@ -55,6 +55,7 @@
 
     <fragment
         android:id="@+id/nav_delete_address"
+        android:label="@string/delete_indirizzo"
         android:name="com.example.cryptotracker.CancellaAddress"
         tools:layout="@layout/fragment_gallery" />
 

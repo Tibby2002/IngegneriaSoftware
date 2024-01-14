@@ -1,6 +1,7 @@
 package com.example.cryptotracker.Supports;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,13 +43,16 @@ public class NumbersViewAdapter extends ArrayAdapter<NumbersView> {
         // then according to the position of the view assign the desired TextView 1 for the same
         TextView textView1 = currentItemView.findViewById(R.id.textView2);
         textView1.setText(currentNumberPosition.getNumberInDigit());
+        textView1.setTextColor(Color.WHITE);
 
         // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.textView3);
         textView2.setText(currentNumberPosition.getNumbersInText());
+        textView2.setTextColor(Color.WHITE);
 
         TextView textView3 = currentItemView.findViewById(R.id.textView1);
         textView3.setText(currentNumberPosition.getNumberInDigit2());
+        textView3.setTextColor(Color.WHITE);
 
         // then return the recyclable view
         return currentItemView;

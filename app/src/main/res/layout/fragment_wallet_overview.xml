@@ -90,7 +90,8 @@
         android:layout_below="@id/layoutHeaderTitlesWallet"
         android:layout_above="@id/addNewAddress"
         android:divider="#393E7D"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_view"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNewAddress"

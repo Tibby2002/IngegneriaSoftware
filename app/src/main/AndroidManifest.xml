@@ -26,12 +26,17 @@
             android:exported="false" />
         <activity
             android:name=".ModifyAddresses"
+            android:label="Modifica Indirizzo"
             android:exported="false" />
         <activity
             android:name=".WalletModify"
             android:exported="false" />
         <activity
             android:name=".AddAssets"
+            android:exported="false" />
+        <activity
+            android:name=".CancellaAddress"
+            android:label="Cencella Indirizzo"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"

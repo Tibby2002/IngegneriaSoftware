@@ -50,5 +50,6 @@
         android:divider="#9C9DB5"
         android:dividerHeight="1dp"
         android:padding="16dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:listSelector="@drawable/list_view"/>
 </FrameLayout>

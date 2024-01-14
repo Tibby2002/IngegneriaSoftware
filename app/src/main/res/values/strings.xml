@@ -36,5 +36,7 @@
     <string name="name">Nome</string>
     <string name="confirm">Conferma</string>
     <string name="email">Email</string>
+    <string name="modifica_indirizzo">Modifica</string>
+    <string name="delete_indirizzo">Cancella</string>
 
 </resources>
