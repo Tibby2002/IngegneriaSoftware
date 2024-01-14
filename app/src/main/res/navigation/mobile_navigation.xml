@@ -12,9 +12,9 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.cryptotracker.ui.gallery.PriceMonitoring"
-        android:label="@string/menu_gallery"
+        android:id="@+id/nav_price_monitoring"
+        android:name="com.example.cryptotracker.PriceMonitoringFragment"
+        android:label="@string/menu_price_monitoring"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment

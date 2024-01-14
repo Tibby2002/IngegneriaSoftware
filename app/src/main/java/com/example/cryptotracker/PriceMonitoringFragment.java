@@ -1,6 +1,4 @@
-package com.example.cryptotracker.ui.gallery;
-
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+package com.example.cryptotracker;
 
 
 import android.content.Intent;
@@ -11,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,32 +17,19 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.cryptotracker.AddAssets;
 import com.example.cryptotracker.MainActivity;
 import com.example.cryptotracker.R;
 import com.example.cryptotracker.Supports.ForegroundService;
-import com.example.cryptotracker.WalletOverview;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
-public class PriceMonitoring extends Fragment {
+public class PriceMonitoringFragment extends Fragment {
     public static Map<String,String> ethereum;
     public static Map<String,String> polygon;
     public static Map<String,String> solana;
