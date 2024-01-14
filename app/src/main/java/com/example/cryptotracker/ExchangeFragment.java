@@ -43,6 +43,8 @@ public class ExchangeFragment extends Fragment {
     private EditText inputExchangeText;
     private EditText outputExchangeText;
 
+    private TextView outputExchangeTextLabel;
+
     private String convertedValue = "0";
     private String inputTextValue = "";
 
@@ -53,7 +55,10 @@ public class ExchangeFragment extends Fragment {
         spinnerTarget = rootView.findViewById(R.id.spinnerTarget);
         inputExchangeText = rootView.findViewById(R.id.inputExchangeText);
         outputExchangeText = rootView.findViewById(R.id.outputExchangeText);
+        outputExchangeTextLabel = rootView.findViewById(R.id.textViewOutputValue);
+        outputExchangeTextLabel.setVisibility(View.GONE);
         outputExchangeText.setVisibility(View.GONE);
+
         ImageButton switchButton = rootView.findViewById(R.id.switchButton);
 
         setAdapterSpinners();
@@ -180,6 +185,7 @@ public class ExchangeFragment extends Fragment {
     private void updateOutputText(Boolean isVisible) {
         if (isVisible) {
             outputExchangeText.setVisibility(View.VISIBLE);
+            outputExchangeTextLabel.setVisibility(View.VISIBLE);
         } else {
             outputExchangeText.setVisibility(View.GONE);
         }
