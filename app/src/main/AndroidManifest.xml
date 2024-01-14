@@ -33,9 +33,6 @@
         <activity
             android:name=".AddAssets"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".WalletOverview"-->
-<!--            android:exported="false" />-->
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />

@@ -25,6 +25,7 @@ import com.example.cryptotracker.Supports.DataStoreSingleton;
 import com.example.cryptotracker.Supports.DeleteAddressesAdapter;
 import com.example.cryptotracker.Supports.ModifyView;
 import com.example.cryptotracker.Supports.ModifyViewAdapter;
+import com.example.cryptotracker.Supports.NumbersViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,49 +33,27 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Single;
 
 public class ModificaAddress extends Fragment {
-    List<Pair<String,String>> addresses;
-
     ArrayList<ModifyView> arrayList;
-    List<String> chain = List.of("Polygon","Ethereum","Solana","Bitcoin","BNB","Avalanche");
-    RxDataStore<Preferences> dataStoreRX;
     ModifyViewAdapter numbersArrayAdapter;
-    String getStringValue(String Key) {
-        Preferences.Key<String> PREF_KEY = PreferencesKeys.stringKey(Key);
-        Single<String> value = dataStoreRX.data().firstOrError().map(prefs -> prefs.get(PREF_KEY)).onErrorReturnItem("null");
-        return value.blockingGet();
-    }
-    void populate(){
-        for(String x : chain){
-            if(!getStringValue(x).equals("null")){
-                addresses.add(new Pair<>(x,getStringValue(x)));
-            }
-        }
-    }
+
+    View rootView;
 
     void press(int position){
         getActivity().startActivity(new Intent(getActivity(),ModifyAddresses.class).putExtra("chain",
-                addresses.get(position).first).putExtra("address",addresses.get(position).second));
+                WalletOverviewFragment.addresses.get(position).first).putExtra("address",
+                WalletOverviewFragment.addresses.get(position).second));
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_modifica_address, container, false);
-        DataStoreSingleton dataStoreSingleton = DataStoreSingleton.getInstance();
-        if (dataStoreSingleton.getDataStore() == null) {
-            dataStoreRX = new RxPreferenceDataStoreBuilder(getActivity(), "wallet").build();
-        } else {
-            dataStoreRX = dataStoreSingleton.getDataStore();
-        }
-        dataStoreSingleton.setDataStore(dataStoreRX);
+        rootView = inflater.inflate(R.layout.fragment_modifica_address, container, false);
 
-
-        addresses = new ArrayList<>();
-        populate();
         arrayList = new ArrayList<>();
-        for(Pair<String, String> x : addresses)
+        for(Pair<String, String> x : WalletOverviewFragment.addresses)
             arrayList.add(new ModifyView(x.first,x.second));
         numbersArrayAdapter = new ModifyViewAdapter(getActivity(), arrayList);
-        ListView numbersListView = view.findViewById(R.id.list_modify);
+        ListView numbersListView = rootView.findViewById(R.id.list_modify);
         numbersListView.setAdapter(numbersArrayAdapter);
         numbersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -82,6 +61,19 @@ public class ModificaAddress extends Fragment {
                press(position);
             }
         });
-        return view;
+        return rootView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        arrayList.clear();
+
+        for(Pair<String, String> x : WalletOverviewFragment.addresses)
+            arrayList.add(new ModifyView(x.first,x.second));
+        numbersArrayAdapter = new ModifyViewAdapter(getActivity(), arrayList);
+        ListView numbersListView = rootView.findViewById(R.id.list_modify);
+        numbersListView.setAdapter(numbersArrayAdapter);
+    }
+
 }
