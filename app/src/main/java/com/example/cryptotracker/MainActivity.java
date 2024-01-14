@@ -89,43 +89,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        String name = " ", surname = " ", photo = " ";
-
-        try {
-            File path = this.getFilesDir();
-            File file = new File(path, "settings.txt");
-
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-            int count = 0;
-            while ((line = br.readLine()) != null) {
-                switch (count) {
-                    case 0:
-                        name = line;
-                        break;
-                    case 1:
-                        surname = line;
-                    case 2:
-                        photo = line;
-                        break;
-                }
-                count++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String usr = name + " " + surname;
-        // TODO: genera eccezione e l'app crasha
-//        ImageView img = (ImageView) findViewById(R.id.imageView);
-//        if (!photo.equals("Default-photo") && !photo.equals(" ")) {
-//            img.setImageIcon(Icon.createWithContentUri(photo));
-//        }
-        NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.textNome);
         TextView overall = findViewById(R.id.value);
         calculateTotValue();
-        navUsername.setText(usr);
+        String username = SharedPreferencesManager.getString(getApplicationContext(), "name", "Name") +
+                " " + SharedPreferencesManager.getString(getApplicationContext(), "surname", "Surname");
+        navUsername.setText(username);
 
     }
 
