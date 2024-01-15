@@ -103,21 +103,20 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
-//        TODO: SCOMMENTARE
-//        if (!password.matches(".*[A-Z].*")) {
-//            Toast.makeText(this, "Password must contain at least one uppercase letter", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//
-//        if (!password.matches(".*\\d.*")) {
-//            Toast.makeText(this, "Password must contain at least one digit", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//
-//        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\",.<>/?].*")) {
-//            Toast.makeText(this, "Password must contain at least one special character", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
+        if (!password.matches(".*[A-Z].*")) {
+            Toast.makeText(this, "Password must contain at least one uppercase letter", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!password.matches(".*\\d.*")) {
+            Toast.makeText(this, "Password must contain at least one digit", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\",.<>/?].*")) {
+            Toast.makeText(this, "Password must contain at least one special character", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         if (!password.equals(confirmPassword)) {
             Toast.makeText(this, "The two passwords do not match each other", Toast.LENGTH_SHORT).show();

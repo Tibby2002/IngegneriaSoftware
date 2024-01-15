@@ -116,7 +116,6 @@ public class ForegroundService extends Service {
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
-        //TODO: da cambiare quando avrò fatto la parte dei grafici delle diverse crypto
         Intent intents = new Intent(getApplicationContext(), MainActivity.class);
 
         intents.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
